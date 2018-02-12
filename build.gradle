@@ -1,0 +1,49 @@
+apply plugin: 'java-library'
+apply plugin: 'maven-publish'
+
+group = 'uk.gov.reng'
+version = '1.0.0'
+
+description = ' Library for prometheus instrumentation in Dropwizard based apps.'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+jar {
+    manifest {
+        attributes('Implementation-Title': project.name,
+                'Implementation-Version': project.version)
+    }
+
+    baseName = 'gds-metrics-dropwizard'
+    version = '1.0.0'
+}
+
+repositories {
+    mavenLocal()
+    jcenter()
+}
+
+dependencies {
+    api 'io.prometheus:simpleclient_dropwizard:0.2.0'
+    api 'io.prometheus:simpleclient_servlet:0.2.0'
+    api 'io.prometheus:simpleclient_hotspot:0.2.0'
+
+    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'org.glassfish.jersey.core:jersey-client:2.25.1'
+    implementation'javax.servlet:javax.servlet-api:3.1.0'
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.8.47'
+    testImplementation 'org.powermock:powermock-api-mockito2:1.7.3'
+    testImplementation 'org.powermock:powermock-module-junit4:1.7.3'
+    testImplementation 'io.dropwizard:dropwizard-testing:1.2.3'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}

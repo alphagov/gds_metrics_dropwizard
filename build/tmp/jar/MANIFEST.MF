@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Implementation-Title: gds_metrics_dropwizard
+Implementation-Version: 1.0.0
+
