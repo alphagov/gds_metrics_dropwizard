@@ -15,9 +15,6 @@ import uk.gov.reng.metrics.mock.MockHttpServletResponse;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.Response;
 import java.io.IOException;
 
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -111,22 +108,5 @@ public class AuthenticationFilterTest {
 		authenticationFilter.init(config);
 		authenticationFilter.doFilter(request, response, chain);
 		authenticationFilter.destroy();
-	}
-
-	@Path("/metrics")
-	public static class MetricsTestResource {
-
-		@GET
-		public Response simpleTest() {
-			return Response.ok().build();
-		}
-	}
-
-	@Path("/index")
-	public static class IndexTestResource {
-		@GET
-		public Response simpleTest() {
-			return Response.ok().build();
-		}
 	}
 }

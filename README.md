@@ -59,7 +59,7 @@ public void run(final Configuration conf, final Environment env) throws Exceptio
 public void run(final Configuration conf, final Environment env) throws Exception {
     ...
     environment.servlets()
-        .addFilter("LoggerFilter", new AuthenticationFilter())
+        .addFilter("AuthenticationFilter", new AuthenticationFilter())
         .addMappingForUrlPatterns(
             EnumSet.of(DispatcherType.REQUEST),
             true,
