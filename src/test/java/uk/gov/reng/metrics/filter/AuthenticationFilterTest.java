@@ -9,6 +9,8 @@ import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import uk.gov.reng.metrics.config.Configuration;
+import uk.gov.reng.metrics.mock.MockHttpServletRequest;
+import uk.gov.reng.metrics.mock.MockHttpServletResponse;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;

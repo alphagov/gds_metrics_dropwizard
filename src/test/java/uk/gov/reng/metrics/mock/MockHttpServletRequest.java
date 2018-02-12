@@ -1,4 +1,4 @@
-package uk.gov.reng.metrics.filter;
+package uk.gov.reng.metrics.mock;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
