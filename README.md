@@ -76,3 +76,6 @@ public void initialize(Bootstrap<MonitoringConfiguration> bootstrap) {
     ...
 }
 ```
+
+5. Disable app security for the metrics path.
+If your application already has security (authentication) implemented, the metrics path defined in the variable `PROMETHEUS_METRICS_PATH` should be excluded because this path already has its own security. `Configuration.getInstance.getPrometheusMetricsPath()` can be used to recover the proper value.
