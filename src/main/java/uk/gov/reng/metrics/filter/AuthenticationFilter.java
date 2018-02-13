@@ -41,7 +41,6 @@ public class AuthenticationFilter implements Filter {
 				httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 				httpResponse.setContentType("text/plain");
 				httpResponse.getWriter().print("Request not allowed");
-				httpResponse.resetBuffer();
 
 				return;
 			}
@@ -60,9 +59,16 @@ public class AuthenticationFilter implements Filter {
 	}
 
 	private boolean isAllowed(final HttpServletRequest request, final Configuration configuration) {
-		final String httpAuthorization = request.getHeader("HTTP_AUTHORIZATION");
-		final Pattern pattern = Pattern.compile("Bearer (.*)", Pattern.CASE_INSENSITIVE);
-		final Matcher matcher = pattern.matcher(httpAuthorization);
+		final String httpAuthorization = request.getHeader("Authorization");
+		final Pattern pattern;
+		final Matcher matcher;
+
+		if (Objects.isNull(httpAuthorization) || httpAuthorization.isEmpty()) {
+			return false;
+		}
+
+		pattern = Pattern.compile("Bearer (.*)", Pattern.CASE_INSENSITIVE);
+		matcher = pattern.matcher(httpAuthorization);
 
 		return matcher.find() &&
 				Objects.nonNull(configuration.getApplicationId()) &&
