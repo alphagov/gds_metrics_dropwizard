@@ -16,6 +16,8 @@ import java.util.regex.Pattern;
 @Priority(500)
 public class AuthenticationFilter implements Filter {
 
+	private static final Pattern TOKEN = Pattern.compile("Bearer (.*)", Pattern.CASE_INSENSITIVE);
+
 	private Configuration configuration;
 
 	@Override
@@ -60,15 +62,13 @@ public class AuthenticationFilter implements Filter {
 
 	private boolean isAllowed(final HttpServletRequest request, final Configuration configuration) {
 		final String httpAuthorization = request.getHeader("Authorization");
-		final Pattern pattern;
 		final Matcher matcher;
 
 		if (Objects.isNull(httpAuthorization) || httpAuthorization.isEmpty()) {
 			return false;
 		}
 
-		pattern = Pattern.compile("Bearer (.*)", Pattern.CASE_INSENSITIVE);
-		matcher = pattern.matcher(httpAuthorization);
+		matcher = TOKEN.matcher(httpAuthorization);
 
 		return matcher.find() &&
 				Objects.nonNull(configuration.getApplicationId()) &&
