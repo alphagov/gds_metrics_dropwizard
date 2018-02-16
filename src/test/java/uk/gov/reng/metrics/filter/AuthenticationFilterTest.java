@@ -74,7 +74,7 @@ public class AuthenticationFilterTest {
 	@Test
 	public void relevantPathAndAuthEnabledWithWrongToken() throws ServletException, IOException {
 		request.setRequestURI("/metrics");
-		request.setHeader("HTTP_AUTHORIZATION", "Bearer correct");
+		request.setHeader("Authorization", "Bearer correct");
 		Mockito.when(configuration.getPrometheusMetricsPath()).thenReturn("/metrics");
 		Mockito.when(configuration.isAuthEnable()).thenReturn(true);
 		Mockito.when(configuration.getApplicationId()).thenReturn("wrong");
@@ -89,7 +89,7 @@ public class AuthenticationFilterTest {
 	public void relevantPathAndAuthEnabledWithCorrectToken() throws ServletException, IOException {
 		Mockito.when(configuration.getPrometheusMetricsPath()).thenReturn("/metrics");
 		request.setRequestURI("/metrics");
-		request.setHeader("HTTP_AUTHORIZATION", "Bearer correct");
+		request.setHeader("Authorization", "Bearer correct");
 		Mockito.when(configuration.isAuthEnable()).thenReturn(true);
 		Mockito.when(configuration.getApplicationId()).thenReturn("correct");
 
