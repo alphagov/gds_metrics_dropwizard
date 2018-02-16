@@ -40,6 +40,7 @@ dependencies {
     testImplementation 'org.powermock:powermock-api-mockito2:1.7.3'
     testImplementation 'org.powermock:powermock-module-junit4:1.7.3'
     testImplementation 'io.dropwizard:dropwizard-testing:1.2.3'
+    testImplementation 'org.eclipse.jetty:jetty-servlet:9.4.8.v20171121'
 }
 
 publishing {

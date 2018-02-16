@@ -15,6 +15,7 @@ import io.prometheus.client.hotspot.ThreadExports;
 import io.prometheus.client.hotspot.VersionInfoExports;
 import uk.gov.reng.metrics.config.Configuration;
 import uk.gov.reng.metrics.filter.AuthenticationFilter;
+import uk.gov.reng.metrics.filter.GdsMetricsFilter;
 
 import javax.servlet.DispatcherType;
 import java.util.EnumSet;
@@ -42,6 +43,8 @@ public class MetricsBundle implements Bundle {
 
 	@Override
 	public void run(final Environment environment) {
+		double[] bucket = { 0.005, 0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1, 2.5, 5, 7.5, 10};
+
 		environment.servlets().addServlet("metrics", new MetricsServlet())
 				.addMapping(configuration.getPrometheusMetricsPath());
 
@@ -51,5 +54,15 @@ public class MetricsBundle implements Bundle {
 						EnumSet.of(DispatcherType.REQUEST),
 						true,
 						configuration.getPrometheusMetricsPath());
+
+		environment.servlets()
+				.addFilter("MetricsFilter", new GdsMetricsFilter(
+						"requests_total",
+						"Represent the total request made to the application", 0,
+						bucket)
+				)
+				.addMappingForUrlPatterns(
+						EnumSet.of(DispatcherType.REQUEST),
+						true, "/*");
 	}
 }

@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import uk.gov.reng.metrics.filter.AuthenticationFilter;
+import uk.gov.reng.metrics.filter.GdsMetricsFilter;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
@@ -27,7 +28,6 @@ public class MetricsBundleTest {
 	private final ServletEnvironment servletEnvironment = mock(ServletEnvironment.class);
 	private final Environment environment = mock(Environment.class);
 
-	private MetricsServlet servlet = new MetricsServlet();
 	private String servletPath = "";
 
 	@Before
@@ -50,10 +50,12 @@ public class MetricsBundleTest {
 		final ArgumentCaptor<MetricsServlet> servletCaptor;
 		final ArgumentCaptor<String> pathCaptor;
 		final ServletRegistration.Dynamic registration = mock(ServletRegistration.Dynamic.class);
-		final FilterRegistration.Dynamic filterRegistration = mock(FilterRegistration.Dynamic.class);
+		final FilterRegistration.Dynamic authFilterRegistration = mock(FilterRegistration.Dynamic.class);
+		final FilterRegistration.Dynamic metricsFilterRegistration = mock(FilterRegistration.Dynamic.class);
 
 		when(servletEnvironment.addServlet(anyString(), any(MetricsServlet.class))).thenReturn(registration);
-		when(servletEnvironment.addFilter(anyString(), any(AuthenticationFilter.class))).thenReturn(filterRegistration);
+		when(servletEnvironment.addFilter(anyString(), any(AuthenticationFilter.class))).thenReturn(authFilterRegistration);
+		when(servletEnvironment.addFilter(anyString(), any(GdsMetricsFilter.class))).thenReturn(metricsFilterRegistration);
 
 		bundle.run(environment);
 
@@ -63,7 +65,8 @@ public class MetricsBundleTest {
 		verify(servletEnvironment).addServlet(eq(metricName), servletCaptor.capture());
 		verify(registration).addMapping(pathCaptor.capture());
 
-		verify(filterRegistration).addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/metrics");
+		verify(authFilterRegistration).addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/metrics");
+		verify(metricsFilterRegistration).addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/*");
 
 		this.servletPath = pathCaptor.getValue();
 	}
