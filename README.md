@@ -16,7 +16,11 @@ Add the library as dependency to your project.
 1. Your application must be deployed on [PaaS](https://www.cloud.service.gov.uk/).
 2. Add the environment variable `PROMETHEUS_METRICS_PATH`. Example:
 ```
-PROMETHEUS_METRICS_PATH = /metrics
+PROMETHEUS_METRICS_PATH=/metrics
+```
+3. If you want to have Dropwizard extended metrics enabled define the `ENABLE_DROPWIZARD_METRICS` environment variable. Example:
+```
+ENABLE_DROPWIZARD_METRICS=true
 ```
 
 ### Maven

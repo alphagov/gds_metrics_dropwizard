@@ -10,6 +10,7 @@ public class Configuration {
 	private static Configuration instance;
 	private String applicationId;
 	private String prometheusMetricsPath;
+	private boolean activeDropwizardMetrics;
 
 	private Configuration() {
 	}
@@ -26,6 +27,7 @@ public class Configuration {
 	public void populateProperties() {
 		applicationId = readApplicationId();
 		prometheusMetricsPath = readPrometheusMetricsPath();
+		activeDropwizardMetrics = readDropwizardMetricsActivation();
 	}
 
 	public String getApplicationId() {
@@ -38,6 +40,10 @@ public class Configuration {
 
 	public boolean isAuthEnable() {
 		return Objects.nonNull(applicationId);
+	}
+
+	public boolean isActiveDropwizardMetrics() {
+		return activeDropwizardMetrics;
 	}
 
 	private String readApplicationId() {
@@ -57,5 +63,15 @@ public class Configuration {
 		final String prometheusMetricsPath = System.getenv("PROMETHEUS_METRICS_PATH");
 
 		return Objects.nonNull(prometheusMetricsPath) ? prometheusMetricsPath : "/metrics";
+	}
+
+	private boolean readDropwizardMetricsActivation() {
+		final String activeDropwizardMetrics = System.getenv("ENABLE_DROPWIZARD_METRICS");
+
+		if (Objects.nonNull(activeDropwizardMetrics) && activeDropwizardMetrics.equals("true")) {
+			return true;
+		}
+
+		return false;
 	}
 }
