@@ -35,47 +35,14 @@ implementation 'uk.gov.reng:gds-metrics-dropwizard:1.0.0'
 
 ### Changes in your project
 
-1. Instantiate  the `Configuration` class in your `run` method.
+1. Add the `MetricsBundle`.
 ```
-public void run(final Configuration conf, final Environment env) throws Exception {
+public void initialize(final Bootstrap<ExampleConfiguration> bootstrap) {
     ...
-    final Configuration configuration = Configuration.getInstance();
-    ...
-}
-```
-
-2. Set the servlet endpoint to allow Prometheus to collect metrics.
-```
-public void run(final Configuration conf, final Environment env) throws Exception {
-    ...
-    environment.servlets().addServlet("metrics", new MetricsServlet())
-        .addMapping(configuration.getPrometheusMetricsPath());
+    bootstrap.addBundle(new MetricsBundle());
     ...
 }
 ```
 
-3. If you want the endpoint to be protected with authentication, add the `AuthenticationFilter` filter.
-```
-public void run(final Configuration conf, final Environment env) throws Exception {
-    ...
-    environment.servlets()
-        .addFilter("AuthenticationFilter", new AuthenticationFilter())
-        .addMappingForUrlPatterns(
-            EnumSet.of(DispatcherType.REQUEST),
-            true,
-            configuration.getPrometheusMetricsPath());
-    ...
-}
-```
-4. Initialize the metrics and register the `DropwizardExports`.
-```
-public void initialize(Bootstrap<MonitoringConfiguration> bootstrap) {
-    ...
-    final MetricRegistry metrics = bootstrap.getMetricRegistry();
-    CollectorRegistry.defaultRegistry.register(new DropwizardExports(metrics));
-    ...
-}
-```
-
-5. Disable app security for the metrics path.
+2. Disable app security for the metrics path.
 If your application already has security (authentication) implemented, the metrics path defined in the variable `PROMETHEUS_METRICS_PATH` should be excluded because this path already has its own security. `Configuration.getInstance.getPrometheusMetricsPath()` can be used to recover the proper value.
