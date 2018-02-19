@@ -2,6 +2,7 @@ package engineering.reliability.gds.metrics.bundle;
 
 import engineering.reliability.gds.metrics.filter.AuthenticationFilter;
 import engineering.reliability.gds.metrics.filter.GdsMetricsFilter;
+import engineering.reliability.gds.metrics.filter.RequestCountFilter;
 import io.dropwizard.jetty.setup.ServletEnvironment;
 import io.dropwizard.setup.Environment;
 import io.prometheus.client.exporter.MetricsServlet;
@@ -52,10 +53,12 @@ public class MetricsBundleTest {
 		final ServletRegistration.Dynamic registration = mock(ServletRegistration.Dynamic.class);
 		final FilterRegistration.Dynamic authFilterRegistration = mock(FilterRegistration.Dynamic.class);
 		final FilterRegistration.Dynamic metricsFilterRegistration = mock(FilterRegistration.Dynamic.class);
+		final FilterRegistration.Dynamic requestCountRegistration = mock(FilterRegistration.Dynamic.class);
 
 		when(servletEnvironment.addServlet(anyString(), any(MetricsServlet.class))).thenReturn(registration);
 		when(servletEnvironment.addFilter(anyString(), any(AuthenticationFilter.class))).thenReturn(authFilterRegistration);
 		when(servletEnvironment.addFilter(anyString(), any(GdsMetricsFilter.class))).thenReturn(metricsFilterRegistration);
+		when(servletEnvironment.addFilter(anyString(), any(RequestCountFilter.class))).thenReturn(requestCountRegistration);
 
 		bundle.run(environment);
 
@@ -67,6 +70,7 @@ public class MetricsBundleTest {
 
 		verify(authFilterRegistration).addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/metrics");
 		verify(metricsFilterRegistration).addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/*");
+		verify(requestCountRegistration).addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/*");
 
 		this.servletPath = pathCaptor.getValue();
 	}

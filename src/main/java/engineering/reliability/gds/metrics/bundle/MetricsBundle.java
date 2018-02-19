@@ -4,6 +4,7 @@ import com.codahale.metrics.MetricRegistry;
 import engineering.reliability.gds.metrics.config.Configuration;
 import engineering.reliability.gds.metrics.filter.AuthenticationFilter;
 import engineering.reliability.gds.metrics.filter.GdsMetricsFilter;
+import engineering.reliability.gds.metrics.filter.RequestCountFilter;
 import io.dropwizard.Bundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -57,9 +58,17 @@ public class MetricsBundle implements Bundle {
 
 		environment.servlets()
 				.addFilter("MetricsFilter", new GdsMetricsFilter(
-						"requests_total",
+						"http_server_request_duration_seconds",
 						"Represent the total request made to the application", 0,
 						bucket))
+				.addMappingForUrlPatterns(
+						EnumSet.of(DispatcherType.REQUEST),
+						true, "/*");
+
+		environment.servlets()
+				.addFilter("RequestCountFilter", new RequestCountFilter(
+						"http_server_requests_total",
+						"The number of http requests made to the application"))
 				.addMappingForUrlPatterns(
 						EnumSet.of(DispatcherType.REQUEST),
 						true, "/*");
