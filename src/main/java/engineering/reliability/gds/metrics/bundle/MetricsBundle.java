@@ -59,8 +59,7 @@ public class MetricsBundle implements Bundle {
 				.addFilter("MetricsFilter", new GdsMetricsFilter(
 						"requests_total",
 						"Represent the total request made to the application", 0,
-						bucket)
-				)
+						bucket))
 				.addMappingForUrlPatterns(
 						EnumSet.of(DispatcherType.REQUEST),
 						true, "/*");
