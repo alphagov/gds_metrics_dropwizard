@@ -1,7 +1,7 @@
 apply plugin: 'java-library'
 apply plugin: 'maven-publish'
 
-group = 'uk.gov.reng'
+group = 'engineering.reliability.gds'
 version = '1.0.0'
 
 description = ' Library for prometheus instrumentation in Dropwizard based apps.'

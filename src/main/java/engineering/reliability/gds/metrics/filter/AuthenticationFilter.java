@@ -1,9 +1,14 @@
-package uk.gov.reng.metrics.filter;
+package engineering.reliability.gds.metrics.filter;
 
-import uk.gov.reng.metrics.config.Configuration;
+import engineering.reliability.gds.metrics.config.Configuration;
 
 import javax.annotation.Priority;
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.ext.Provider;

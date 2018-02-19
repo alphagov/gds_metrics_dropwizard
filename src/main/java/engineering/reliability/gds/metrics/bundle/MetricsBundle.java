@@ -1,6 +1,9 @@
-package uk.gov.reng.metrics.bundle;
+package engineering.reliability.gds.metrics.bundle;
 
 import com.codahale.metrics.MetricRegistry;
+import engineering.reliability.gds.metrics.config.Configuration;
+import engineering.reliability.gds.metrics.filter.AuthenticationFilter;
+import engineering.reliability.gds.metrics.filter.GdsMetricsFilter;
 import io.dropwizard.Bundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -13,9 +16,6 @@ import io.prometheus.client.hotspot.MemoryPoolsExports;
 import io.prometheus.client.hotspot.StandardExports;
 import io.prometheus.client.hotspot.ThreadExports;
 import io.prometheus.client.hotspot.VersionInfoExports;
-import uk.gov.reng.metrics.config.Configuration;
-import uk.gov.reng.metrics.filter.AuthenticationFilter;
-import uk.gov.reng.metrics.filter.GdsMetricsFilter;
 
 import javax.servlet.DispatcherType;
 import java.util.EnumSet;
@@ -43,7 +43,7 @@ public class MetricsBundle implements Bundle {
 
 	@Override
 	public void run(final Environment environment) {
-		double[] bucket = { 0.005, 0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1, 2.5, 5, 7.5, 10};
+		double[] bucket = {0.005, 0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1, 2.5, 5, 7.5, 10};
 
 		environment.servlets().addServlet("metrics", new MetricsServlet())
 				.addMapping(configuration.getPrometheusMetricsPath());

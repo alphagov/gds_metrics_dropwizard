@@ -1,4 +1,4 @@
-package uk.gov.reng.metrics.config;
+package engineering.reliability.gds.metrics.config;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;

@@ -1,4 +1,4 @@
-package uk.gov.reng.metrics.filter;
+package engineering.reliability.gds.metrics.filter;
 
 import io.prometheus.client.Collector;
 import io.prometheus.client.CollectorRegistry;

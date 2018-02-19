@@ -1,5 +1,8 @@
-package uk.gov.reng.metrics.filter;
+package engineering.reliability.gds.metrics.filter;
 
+import engineering.reliability.gds.metrics.config.Configuration;
+import engineering.reliability.gds.metrics.mock.MockHttpServletRequest;
+import engineering.reliability.gds.metrics.mock.MockHttpServletResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,9 +11,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import uk.gov.reng.metrics.config.Configuration;
-import uk.gov.reng.metrics.mock.MockHttpServletRequest;
-import uk.gov.reng.metrics.mock.MockHttpServletResponse;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;

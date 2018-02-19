@@ -1,4 +1,4 @@
-package uk.gov.reng.metrics.mock;
+package engineering.reliability.gds.metrics.mock;
 
 import javax.servlet.*;
 import javax.servlet.http.*;

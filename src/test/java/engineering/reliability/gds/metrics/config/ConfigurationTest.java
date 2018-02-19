@@ -1,4 +1,4 @@
-package uk.gov.reng.metrics.config;
+package engineering.reliability.gds.metrics.config;
 
 import org.junit.Before;
 import org.junit.Test;

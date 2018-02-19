@@ -1,5 +1,7 @@
-package uk.gov.reng.metrics.bundle;
+package engineering.reliability.gds.metrics.bundle;
 
+import engineering.reliability.gds.metrics.filter.AuthenticationFilter;
+import engineering.reliability.gds.metrics.filter.GdsMetricsFilter;
 import io.dropwizard.jetty.setup.ServletEnvironment;
 import io.dropwizard.setup.Environment;
 import io.prometheus.client.exporter.MetricsServlet;
@@ -7,8 +9,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
-import uk.gov.reng.metrics.filter.AuthenticationFilter;
-import uk.gov.reng.metrics.filter.GdsMetricsFilter;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
