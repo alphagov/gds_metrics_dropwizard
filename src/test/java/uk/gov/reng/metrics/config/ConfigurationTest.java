@@ -1,6 +1,5 @@
 package uk.gov.reng.metrics.config;
 
-import org.hamcrest.core.IsEqual;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,9 +31,11 @@ public class ConfigurationTest {
 		assertThat("ApplicationId should be null",
 				configuration.getApplicationId(), nullValue());
 		assertThat("PrometheusMetricsPath should be null",
-				configuration.getPrometheusMetricsPath(), IsEqual.equalTo("/metrics"));
+				configuration.getPrometheusMetricsPath(), equalTo("/metrics"));
 		assertThat("Authentication should be disabled",
 				configuration.isAuthEnable(), is(false));
+		assertThat("Dropwizard metrics should be disabled",
+				configuration.isActiveDropwizardMetrics(), is(false));
 	}
 
 	@Test
@@ -51,6 +52,7 @@ public class ConfigurationTest {
 		mockStatic(System.class);
 		when(getenv(eq("VCAP_APPLICATION"))).thenReturn("{ \"application_id\" => \"something\" }");
 		when(getenv(eq("PROMETHEUS_METRICS_PATH"))).thenReturn("/prometheus");
+		when(getenv(eq("ENABLE_DROPWIZARD_METRICS"))).thenReturn("true");
 	}
 
 	@Test
@@ -61,6 +63,16 @@ public class ConfigurationTest {
 
 		assertThat("PrometheusMetricsPath should be equalt to '/prometheus'",
 				configuration.getPrometheusMetricsPath(), equalTo("/prometheus"));
+	}
+
+	@Test
+	public void getActiveDropwizardMetricsPathFromEnv() {
+		prepareEnvMocks();
+
+		configuration.populateProperties();
+
+		assertThat("activeDropwizardMetrics should be equalt to 'true'",
+				configuration.isActiveDropwizardMetrics(), equalTo(true));
 	}
 
 	@Test
