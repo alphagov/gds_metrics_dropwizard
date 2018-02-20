@@ -1,5 +1,6 @@
 package engineering.reliability.gds.metrics.filter;
 
+import engineering.reliability.gds.metrics.utils.StringUtils;
 import io.prometheus.client.Histogram;
 
 import javax.servlet.Filter;
@@ -86,10 +87,6 @@ public class GdsMetricsFilter implements Filter {
 		}
 	}
 
-	private boolean isEmpty(String s) {
-		return s == null || s.length() == 0;
-	}
-
 	private String getComponents(String str) {
 		if (str == null || pathComponents < 1) {
 			return str;
@@ -113,29 +110,29 @@ public class GdsMetricsFilter implements Filter {
 		Histogram.Builder builder = Histogram.build()
 				.labelNames("host", "path", "method");
 
-		if (filterConfig == null && isEmpty(metricName)) {
+		if (filterConfig == null && StringUtils.isEmpty(metricName)) {
 			throw new ServletException("No configuration object provided, and no metricName passed via constructor");
 		}
 
 		if (filterConfig != null) {
-			if (isEmpty(metricName)) {
+			if (StringUtils.isEmpty(metricName)) {
 				metricName = filterConfig.getInitParameter(METRIC_NAME_PARAM);
-				if (isEmpty(metricName)) {
+				if (StringUtils.isEmpty(metricName)) {
 					throw new ServletException("Init parameter \"" + METRIC_NAME_PARAM + "\" is required; please supply a value");
 				}
 			}
 
-			if (!isEmpty(filterConfig.getInitParameter(HELP_PARAM))) {
+			if (!StringUtils.isEmpty(filterConfig.getInitParameter(HELP_PARAM))) {
 				help = filterConfig.getInitParameter(HELP_PARAM);
 			}
 
 			// Allow overriding of the path "depth" to track
-			if (!isEmpty(filterConfig.getInitParameter(PATH_COMPONENT_PARAM))) {
+			if (!StringUtils.isEmpty(filterConfig.getInitParameter(PATH_COMPONENT_PARAM))) {
 				pathComponents = Integer.valueOf(filterConfig.getInitParameter(PATH_COMPONENT_PARAM));
 			}
 
 			// Allow users to override the default bucket configuration
-			if (!isEmpty(filterConfig.getInitParameter(BUCKET_CONFIG_PARAM))) {
+			if (!StringUtils.isEmpty(filterConfig.getInitParameter(BUCKET_CONFIG_PARAM))) {
 				String[] bucketParams = filterConfig.getInitParameter(BUCKET_CONFIG_PARAM).split(",");
 				buckets = new double[bucketParams.length];
 
