@@ -35,6 +35,9 @@ public class RequestCountFilterTest {
         when(req.getHeader("Host")).thenReturn("example.com");
 
         HttpServletResponse res = mock(HttpServletResponse.class);
+
+        when(res.getStatus()).thenReturn(200);
+
         FilterChain c = mock(FilterChain.class);
 
         f.doFilter(req, res, c);
@@ -46,8 +49,8 @@ public class RequestCountFilterTest {
         final Double sampleValue = CollectorRegistry.defaultRegistry
             .getSampleValue(
                 "http_server_requests_total",
-                new String[]{"host", "path", "method"},
-                new String[]{"example.com", "/some/path", HttpMethod.GET.asString()}
+                new String[]{"host", "code", "path", "method"},
+                new String[]{"example.com", "200", "/some/path", HttpMethod.GET.asString()}
             );
 
         assertNotNull(sampleValue);
