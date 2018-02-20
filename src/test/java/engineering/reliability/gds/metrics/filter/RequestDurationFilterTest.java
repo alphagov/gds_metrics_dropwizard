@@ -22,8 +22,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class GdsMetricsFilterTest {
-	GdsMetricsFilter f = new GdsMetricsFilter();
+public class RequestDurationFilterTest {
+	RequestDurationFilter f = new RequestDurationFilter();
 
 	@After
 	public void clear() {
@@ -37,8 +37,8 @@ public class GdsMetricsFilterTest {
 
 		String metricName = "foo";
 
-		when(cfg.getInitParameter(GdsMetricsFilter.METRIC_NAME_PARAM)).thenReturn(metricName);
-		when(cfg.getInitParameter(GdsMetricsFilter.PATH_COMPONENT_PARAM)).thenReturn("4");
+		when(cfg.getInitParameter(RequestDurationFilter.METRIC_NAME_PARAM)).thenReturn(metricName);
+		when(cfg.getInitParameter(RequestDurationFilter.PATH_COMPONENT_PARAM)).thenReturn("4");
 
 		f.init(cfg);
 
@@ -87,8 +87,8 @@ public class GdsMetricsFilterTest {
 
 		String name = "foo";
 		FilterConfig cfg = mock(FilterConfig.class);
-		when(cfg.getInitParameter(GdsMetricsFilter.METRIC_NAME_PARAM)).thenReturn(name);
-		when(cfg.getInitParameter(GdsMetricsFilter.PATH_COMPONENT_PARAM)).thenReturn("0");
+		when(cfg.getInitParameter(RequestDurationFilter.METRIC_NAME_PARAM)).thenReturn(name);
+		when(cfg.getInitParameter(RequestDurationFilter.PATH_COMPONENT_PARAM)).thenReturn("0");
 
 		f.init(cfg);
 		f.doFilter(req, res, c);
@@ -121,8 +121,8 @@ public class GdsMetricsFilterTest {
 
 		String name = "foo";
 		FilterConfig cfg = mock(FilterConfig.class);
-		when(cfg.getInitParameter(GdsMetricsFilter.METRIC_NAME_PARAM)).thenReturn(name);
-		when(cfg.getInitParameter(GdsMetricsFilter.PATH_COMPONENT_PARAM)).thenReturn("0");
+		when(cfg.getInitParameter(RequestDurationFilter.METRIC_NAME_PARAM)).thenReturn(name);
+		when(cfg.getInitParameter(RequestDurationFilter.PATH_COMPONENT_PARAM)).thenReturn("0");
 
 		f.init(cfg);
 		f.doFilter(req, res, c);
@@ -152,7 +152,7 @@ public class GdsMetricsFilterTest {
 			return null;
 		}).when(c).doFilter(any(HttpServletRequest.class), any(HttpServletResponse.class));
 
-		GdsMetricsFilter constructed = new GdsMetricsFilter(
+		RequestDurationFilter constructed = new RequestDurationFilter(
 				"foobar_baz_filter_duration_seconds",
 				"Help for my filter",
 				0,
@@ -191,8 +191,8 @@ public class GdsMetricsFilterTest {
 
 		final String buckets = "0.01,0.05,0.1,0.15,0.25";
 		FilterConfig cfg = mock(FilterConfig.class);
-		when(cfg.getInitParameter(GdsMetricsFilter.BUCKET_CONFIG_PARAM)).thenReturn(buckets);
-		when(cfg.getInitParameter(GdsMetricsFilter.METRIC_NAME_PARAM)).thenReturn("foo");
+		when(cfg.getInitParameter(RequestDurationFilter.BUCKET_CONFIG_PARAM)).thenReturn(buckets);
+		when(cfg.getInitParameter(RequestDurationFilter.METRIC_NAME_PARAM)).thenReturn("foo");
 
 		HttpServletResponse res = mock(HttpServletResponse.class);
 

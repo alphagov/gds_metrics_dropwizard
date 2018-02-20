@@ -58,7 +58,7 @@ import java.util.Objects;
  *
  * @author Andrew Stuart &lt;andrew.stuart2@gmail.com&gt;
  */
-public class GdsMetricsFilter implements Filter {
+public class RequestDurationFilter implements Filter {
 
 	static final String PATH_COMPONENT_PARAM = "path-components";
 	static final String HELP_PARAM = "help";
@@ -73,9 +73,9 @@ public class GdsMetricsFilter implements Filter {
 	private String help = "The time taken fulfilling servlet requests";
 	private double[] buckets = null;
 
-	public GdsMetricsFilter() {}
+	public RequestDurationFilter() {}
 
-	public GdsMetricsFilter(
+	public RequestDurationFilter(
 			String metricName,
 			String help,
 			Integer pathComponents,

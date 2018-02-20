@@ -3,7 +3,7 @@ package engineering.reliability.gds.metrics.bundle;
 import com.codahale.metrics.MetricRegistry;
 import engineering.reliability.gds.metrics.config.Configuration;
 import engineering.reliability.gds.metrics.filter.AuthenticationFilter;
-import engineering.reliability.gds.metrics.filter.GdsMetricsFilter;
+import engineering.reliability.gds.metrics.filter.RequestDurationFilter;
 import engineering.reliability.gds.metrics.filter.RequestCountFilter;
 import io.dropwizard.Bundle;
 import io.dropwizard.setup.Bootstrap;
@@ -46,7 +46,7 @@ public class MetricsBundle implements Bundle {
 	@Override
 	public void run(final Environment environment) {
 		final double[] bucket = {0.005, 0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1, 2.5, 5, 7.5, 10};
-		final GdsMetricsFilter gdsMetricsFilter;
+		final RequestDurationFilter requestDurationFilter;
 		final RequestCountFilter requestCountFilter;
 
 		environment.servlets().addServlet("metrics", new MetricsServlet())
@@ -54,12 +54,12 @@ public class MetricsBundle implements Bundle {
 
 		this.addFilter(environment, "AuthenticationFilter", new AuthenticationFilter(), configuration.getPrometheusMetricsPath());
 
-		gdsMetricsFilter = new GdsMetricsFilter(
+		requestDurationFilter = new RequestDurationFilter(
 				"http_server_request_duration_seconds",
 				"Represent the total request made to the application",
 				0,
 				bucket);
-		this.addFilter(environment, "MetricsFilter", gdsMetricsFilter, "/*");
+		this.addFilter(environment, "MetricsFilter", requestDurationFilter, "/*");
 
 		requestCountFilter = new RequestCountFilter(
 				"http_server_requests_total",

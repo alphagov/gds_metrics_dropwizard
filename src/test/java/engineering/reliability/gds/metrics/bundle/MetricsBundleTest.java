@@ -1,7 +1,7 @@
 package engineering.reliability.gds.metrics.bundle;
 
 import engineering.reliability.gds.metrics.filter.AuthenticationFilter;
-import engineering.reliability.gds.metrics.filter.GdsMetricsFilter;
+import engineering.reliability.gds.metrics.filter.RequestDurationFilter;
 import engineering.reliability.gds.metrics.filter.RequestCountFilter;
 import io.dropwizard.jetty.setup.ServletEnvironment;
 import io.dropwizard.setup.Environment;
@@ -57,7 +57,7 @@ public class MetricsBundleTest {
 
 		when(servletEnvironment.addServlet(anyString(), any(MetricsServlet.class))).thenReturn(registration);
 		when(servletEnvironment.addFilter(anyString(), any(AuthenticationFilter.class))).thenReturn(authFilterRegistration);
-		when(servletEnvironment.addFilter(anyString(), any(GdsMetricsFilter.class))).thenReturn(metricsFilterRegistration);
+		when(servletEnvironment.addFilter(anyString(), any(RequestDurationFilter.class))).thenReturn(metricsFilterRegistration);
 		when(servletEnvironment.addFilter(anyString(), any(RequestCountFilter.class))).thenReturn(requestCountRegistration);
 
 		bundle.run(environment);
