@@ -54,3 +54,34 @@ public void initialize(final Bootstrap<ExampleConfiguration> bootstrap) {
 
 2. Disable app security for the metrics path.
 If your application already has security (authentication) implemented, the metrics path defined in the variable `PROMETHEUS_METRICS_PATH` should be excluded because this path already has its own security. `Configuration.getInstance.getPrometheusMetricsPath()` can be used to recover the proper value.
+
+## Running on PaaS
+
+If your app runs on the [GOV.UK PaaS](https://www.cloud.service.gov.uk/), you'll need to set the environment variable with:
+
+```
+$ cf set-env your-app-name PROMETHEUS_METRICS_PATH /metrics
+```
+
+This command makes the metrics endpoint available in production, whereas the setup steps above only applied temporarily to the server on your local machine.
+
+In production, this endpoint is automatically protected with authentication. Citizens will not be able to see your metrics.
+
+```
+$ cf set-env your-app-name ENABLE_DROPWIZARD_METRICS true
+```
+
+This command makes the Dropwizard extended metrics available, obtaining a more verbose metrics.
+
+## Extended metrics
+
+By default the application activates some default metrics making them available to the user. In addition, the library offers the possibility (see steps above) to enable the Dropwizard metrics. This metrics are based on the project [Dropwizard Metrics](http://metrics.dropwizard.io)
+
+The users can choose to activate them or not if they consider they bring something interesting or they want to build some custom Grafana dashboards. 
+
+## Adding custom metrics
+This step is optional.
+
+By default, common metrics will be recorded, but you can record your own metrics, too. You might want to capture how many users are signed up for your service or how many emails are sent.
+
+The library is built on top of the `prometheus_java_client`, so you can use the [interface it provides](https://github.com/prometheus/client_java#instrumenting) for this. There's more documentation on types of metric [here](https://prometheus.io/docs/concepts/metric_types/).
