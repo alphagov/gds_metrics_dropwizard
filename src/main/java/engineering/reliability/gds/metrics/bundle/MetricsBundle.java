@@ -19,6 +19,7 @@ import io.prometheus.client.hotspot.ThreadExports;
 import io.prometheus.client.hotspot.VersionInfoExports;
 
 import javax.servlet.DispatcherType;
+import javax.servlet.Filter;
 import java.util.EnumSet;
 
 public class MetricsBundle implements Bundle {
@@ -44,33 +45,32 @@ public class MetricsBundle implements Bundle {
 
 	@Override
 	public void run(final Environment environment) {
-		double[] bucket = {0.005, 0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1, 2.5, 5, 7.5, 10};
+		final double[] bucket = {0.005, 0.01, 0.025, 0.05, 0.075, 0.1, 0.25, 0.5, 0.75, 1, 2.5, 5, 7.5, 10};
+		final GdsMetricsFilter gdsMetricsFilter;
+		final RequestCountFilter requestCountFilter;
 
 		environment.servlets().addServlet("metrics", new MetricsServlet())
 				.addMapping(configuration.getPrometheusMetricsPath());
 
-		environment.servlets()
-				.addFilter("AuthenticationFilter", new AuthenticationFilter())
-				.addMappingForUrlPatterns(
-						EnumSet.of(DispatcherType.REQUEST),
-						true,
-						configuration.getPrometheusMetricsPath());
+		this.addFilter(environment, "AuthenticationFilter", new AuthenticationFilter(), configuration.getPrometheusMetricsPath());
 
-		environment.servlets()
-				.addFilter("MetricsFilter", new GdsMetricsFilter(
-						"http_server_request_duration_seconds",
-						"Represent the total request made to the application", 0,
-						bucket))
-				.addMappingForUrlPatterns(
-						EnumSet.of(DispatcherType.REQUEST),
-						true, "/*");
+		gdsMetricsFilter = new GdsMetricsFilter(
+				"http_server_request_duration_seconds",
+				"Represent the total request made to the application",
+				0,
+				bucket);
+		this.addFilter(environment, "MetricsFilter", gdsMetricsFilter, "/*");
 
+		requestCountFilter = new RequestCountFilter(
+				"http_server_requests_total",
+				"The number of http requests made to the application");
+		this.addFilter(environment, "RequestCountFilter", requestCountFilter, "/*");
+	}
+
+	private void addFilter(final Environment environment, final String name, final Filter filter, final String path) {
 		environment.servlets()
-				.addFilter("RequestCountFilter", new RequestCountFilter(
-						"http_server_requests_total",
-						"The number of http requests made to the application"))
-				.addMappingForUrlPatterns(
-						EnumSet.of(DispatcherType.REQUEST),
-						true, "/*");
+				.addFilter(name, filter)
+				.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, path);
+
 	}
 }
