@@ -1,5 +1,9 @@
-# gds_metrics_dropwizard
-Library for prometheus instrumentation in __Dropwizard__ based apps.
+# GDS Metrics: Dropwizard version
+Library for [prometheus](https://prometheus.io/) instrumentation in [Dropwizard](http://www.dropwizard.io) based apps.
+
+## Overview
+
+The library can be added to your web app to capture metrics about how it's performing. These metrics are served from an endpoint on your app and can be scraped by Prometheus and turned into Grafana dashboards.
 
 ## Build the project
 `./gradlew build`
@@ -7,9 +11,23 @@ Library for prometheus instrumentation in __Dropwizard__ based apps.
 ## Publish to a Maven local repositoty
 `gradle publishToMavenLocal`
 
-## Adding to your project
+## Adding the library to your project
 
 Add the library as dependency to your project.
+
+### Maven
+```
+<dependency>
+    <groupdId>engineering.gds-reliability</groupdId>
+    <artifactId>gds-metrics-dropwizard</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+
+### Gradle
+```
+implementation 'engineering.gds-reliability:gds-metrics-dropwizard:1.0.0'
+```
 
 ### Configure the app to be used by prometheus
 
@@ -18,23 +36,9 @@ Add the library as dependency to your project.
 ```
 PROMETHEUS_METRICS_PATH=/metrics
 ```
-3. If you want to have Dropwizard extended metrics enabled define the `ENABLE_DROPWIZARD_METRICS` environment variable. Example:
+3. If you want to have Dropwizard extended metrics enabled, define the `ENABLE_DROPWIZARD_METRICS` environment variable. Example:
 ```
 ENABLE_DROPWIZARD_METRICS=true
-```
-
-### Maven
-```
-<dependency>
-    <groupdId>uk.gov.reng</groupdId>
-    <artifactId>gds-metrics-dropwizard</artifactId>
-    <version>1.0.0</version>
-</dependency>
-```
-
-### Gradle
-```
-implementation 'uk.gov.reng:gds-metrics-dropwizard:1.0.0'
 ```
 
 ### Changes in your project
