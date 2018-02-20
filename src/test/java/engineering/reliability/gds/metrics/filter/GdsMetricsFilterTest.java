@@ -5,7 +5,6 @@ import io.prometheus.client.CollectorRegistry;
 import org.eclipse.jetty.http.HttpMethod;
 import org.junit.After;
 import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import javax.servlet.FilterChain;
@@ -52,13 +51,21 @@ public class GdsMetricsFilterTest {
 		when(req.getHeader("Host")).thenReturn("test-host");
 
 		HttpServletResponse res = mock(HttpServletResponse.class);
+
+		when(res.getStatus()).thenReturn(200);
+
 		FilterChain c = mock(FilterChain.class);
 
 		f.doFilter(req, res, c);
 
 		verify(c).doFilter(req, res);
 
-		final Double sampleValue = CollectorRegistry.defaultRegistry.getSampleValue(metricName + "_count", new String[]{"host", "path", "method"}, new String[]{"test-host", "/foo/bar/baz/bang", HttpMethod.GET.asString()});
+		final Double sampleValue = CollectorRegistry.defaultRegistry
+				.getSampleValue(
+						metricName + "_count",
+						new String[]{"host", "code", "path", "method"},
+						new String[]{"test-host", "200", "/foo/bar/baz/bang",
+								HttpMethod.GET.asString()});
 		assertNotNull(sampleValue);
 		assertEquals(1, sampleValue, 0.0001);
 	}
@@ -73,6 +80,9 @@ public class GdsMetricsFilterTest {
 		when(req.getHeader("Host")).thenReturn("test-host");
 
 		HttpServletResponse res = mock(HttpServletResponse.class);
+
+		when(res.getStatus()).thenReturn(200);
+
 		FilterChain c = mock(FilterChain.class);
 
 		String name = "foo";
@@ -85,7 +95,11 @@ public class GdsMetricsFilterTest {
 
 		verify(c).doFilter(req, res);
 
-		final Double sampleValue = CollectorRegistry.defaultRegistry.getSampleValue(name + "_count", new String[]{"host", "path", "method"}, new String[]{"test-host", path, HttpMethod.GET.asString()});
+		final Double sampleValue = CollectorRegistry.defaultRegistry
+				.getSampleValue(
+						name + "_count",
+						new String[]{"host", "code", "path", "method"},
+						new String[]{"test-host", "200", path, HttpMethod.GET.asString()});
 		assertNotNull(sampleValue);
 		assertEquals(1, sampleValue, 0.0001);
 	}
@@ -100,6 +114,9 @@ public class GdsMetricsFilterTest {
 		when(req.getHeader("Host")).thenReturn(null);
 
 		HttpServletResponse res = mock(HttpServletResponse.class);
+
+		when(res.getStatus()).thenReturn(200);
+
 		FilterChain c = mock(FilterChain.class);
 
 		String name = "foo";
@@ -112,7 +129,11 @@ public class GdsMetricsFilterTest {
 
 		verify(c).doFilter(req, res);
 
-		final Double sampleValue = CollectorRegistry.defaultRegistry.getSampleValue(name + "_count", new String[]{"host", "path", "method"}, new String[]{"", path, HttpMethod.GET.asString()});
+		final Double sampleValue = CollectorRegistry.defaultRegistry
+				.getSampleValue(
+						name + "_count",
+						new String[]{"host", "code", "path", "method"},
+						new String[]{"", "200", path, HttpMethod.GET.asString()});
 		assertNotNull(sampleValue);
 		assertEquals(1, sampleValue, 0.0001);
 	}
@@ -126,12 +147,9 @@ public class GdsMetricsFilterTest {
 		when(req.getHeader("Host")).thenReturn("test-host");
 
 		FilterChain c = mock(FilterChain.class);
-		doAnswer(new Answer<Void>() {
-			@Override
-			public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
-				Thread.sleep(100);
-				return null;
-			}
+		doAnswer((Answer<Void>) invocationOnMock -> {
+			Thread.sleep(100);
+			return null;
 		}).when(c).doFilter(any(HttpServletRequest.class), any(HttpServletResponse.class));
 
 		GdsMetricsFilter constructed = new GdsMetricsFilter(
@@ -143,9 +161,16 @@ public class GdsMetricsFilterTest {
 		constructed.init(mock(FilterConfig.class));
 
 		HttpServletResponse res = mock(HttpServletResponse.class);
+
+		when(res.getStatus()).thenReturn(200);
+
 		constructed.doFilter(req, res, c);
 
-		final Double sum = CollectorRegistry.defaultRegistry.getSampleValue("foobar_baz_filter_duration_seconds_sum", new String[]{"host", "path", "method"}, new String[]{"test-host", path, HttpMethod.POST.asString()});
+		final Double sum = CollectorRegistry.defaultRegistry
+				.getSampleValue(
+						"foobar_baz_filter_duration_seconds_sum",
+						new String[]{"host", "code", "path", "method"},
+						new String[]{"test-host", "200", path, HttpMethod.POST.asString()});
 		assertNotNull(sum);
 		assertEquals(0.1, sum, 0.01);
 	}
@@ -159,12 +184,9 @@ public class GdsMetricsFilterTest {
 		when(req.getHeader("Host")).thenReturn("test-host");
 
 		FilterChain c = mock(FilterChain.class);
-		doAnswer(new Answer<Void>() {
-			@Override
-			public Void answer(InvocationOnMock invocationOnMock) throws Throwable {
-				Thread.sleep(100);
-				return null;
-			}
+		doAnswer((Answer<Void>) invocationOnMock -> {
+			Thread.sleep(100);
+			return null;
 		}).when(c).doFilter(any(HttpServletRequest.class), any(HttpServletResponse.class));
 
 		final String buckets = "0.01,0.05,0.1,0.15,0.25";
@@ -174,17 +196,31 @@ public class GdsMetricsFilterTest {
 
 		HttpServletResponse res = mock(HttpServletResponse.class);
 
+		when(res.getStatus()).thenReturn(200);
+
 		f.init(cfg);
 
 		f.doFilter(req, res, c);
 
-		final Double sum = CollectorRegistry.defaultRegistry.getSampleValue("foo_sum", new String[]{"host", "path", "method"}, new String[]{"test-host", "/foo", HttpMethod.POST.asString()});
+		final Double sum = CollectorRegistry.defaultRegistry
+				.getSampleValue(
+						"foo_sum",
+						new String[]{"host", "code", "path", "method"},
+						new String[]{"test-host", "200", "/foo", HttpMethod.POST.asString()});
 		assertEquals(0.1, sum, 0.01);
 
-		final Double le05 = CollectorRegistry.defaultRegistry.getSampleValue("foo_bucket", new String[]{"host", "path", "method", "le"}, new String[]{"test-host", "/foo", HttpMethod.POST.asString(), "0.05"});
+		final Double le05 = CollectorRegistry.defaultRegistry
+				.getSampleValue(
+						"foo_bucket",
+						new String[]{"host", "code", "path", "method", "le"},
+						new String[]{"test-host", "200", "/foo", HttpMethod.POST.asString(), "0.05"});
 		assertNotNull(le05);
 		assertEquals(0, le05, 0.01);
-		final Double le15 = CollectorRegistry.defaultRegistry.getSampleValue("foo_bucket", new String[]{"host", "path", "method", "le"}, new String[]{"test-host", "/foo", HttpMethod.POST.asString(), "0.15"});
+		final Double le15 = CollectorRegistry.defaultRegistry
+				.getSampleValue(
+						"foo_bucket",
+						new String[]{"host", "code", "path", "method", "le"},
+						new String[]{"test-host", "200", "/foo", HttpMethod.POST.asString(), "0.15"});
 		assertNotNull(le15);
 		assertEquals(1, le15, 0.01);
 

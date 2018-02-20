@@ -2,6 +2,7 @@ package engineering.reliability.gds.metrics.filter;
 
 import engineering.reliability.gds.metrics.utils.StringUtils;
 import io.prometheus.client.Histogram;
+import io.prometheus.client.SimpleTimer;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -10,7 +11,9 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * Class based on MetricsFilter class documented below
@@ -108,7 +111,7 @@ public class GdsMetricsFilter implements Filter {
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		Histogram.Builder builder = Histogram.build()
-				.labelNames("host", "path", "method");
+				.labelNames("host", "code", "path", "method");
 
 		if (filterConfig == null && StringUtils.isEmpty(metricName)) {
 			throw new ServletException("No configuration object provided, and no metricName passed via constructor");
@@ -154,29 +157,35 @@ public class GdsMetricsFilter implements Filter {
 
 	@Override
 	public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+		final HttpServletRequest request;
+		final HttpServletResponse response;
+		final String path;
+		final SimpleTimer simpleTimer;
+		String hostName;
+
+
 		if (!(servletRequest instanceof HttpServletRequest)) {
 			filterChain.doFilter(servletRequest, servletResponse);
 			return;
 		}
 
-		HttpServletRequest request = (HttpServletRequest) servletRequest;
+		request = (HttpServletRequest) servletRequest;
+		path = request.getRequestURI();
+		hostName = request.getHeader("Host");
 
-		String path = request.getRequestURI();
-
-		String hostName = request.getHeader("Host");
-
-		if (hostName == null || hostName.isEmpty()) {
+		if (Objects.isNull(hostName) || hostName.isEmpty()) {
 			hostName = "";
 		}
 
-		Histogram.Timer timer = histogram
-				.labels(hostName, getComponents(path), request.getMethod())
-				.startTimer();
+		simpleTimer = new SimpleTimer();
 
 		try {
 			filterChain.doFilter(servletRequest, servletResponse);
 		} finally {
-			timer.observeDuration();
+			response = (HttpServletResponse) servletResponse;
+
+			histogram.labels(hostName, String.valueOf(response.getStatus()), getComponents(path), request.getMethod())
+					.observe(simpleTimer.elapsedSeconds());
 		}
 	}
 
