@@ -13,6 +13,27 @@ The library can be added to your web app to capture metrics about how it's perfo
 
 ## Adding the library to your project
 
+Add the online repository where the library is stored.
+
+### Maven
+
+```
+<repositories>
+    <repository>
+        <id>reliability-engineering-repository</id>
+        <name>Repository containing reliability enginieering dependencies</name>
+        <url>https://dl.bintray.com/reliability-engineering-gds/gds_metrics_dropwizard</url>
+    </repository>
+</repositories>
+``` 
+
+### Gradle
+```
+repositories {
+    maven { url "https://dl.bintray.com/reliability-engineering-gds/gds_metrics_dropwizard" }
+}
+```
+
 Add the library as dependency to your project.
 
 ### Maven
