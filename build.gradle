@@ -1,13 +1,35 @@
+plugins {
+    id "com.jfrog.bintray" version "1.7.3"
+}
+
 apply plugin: 'java-library'
 apply plugin: 'maven-publish'
+apply plugin: 'maven'
 
 group = 'engineering.gds-reliability'
-version = '1.0.0'
+version = '0.0.1'
 
 description = ' Library for prometheus instrumentation in Dropwizard based apps.'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+    configurations = ['archives']
+
+    pkg {
+        repo = 'gds_metrics_dropwizard'
+        name = 'gds_metrics_dropwizard'
+        userOrg = 'reliability-engineering-gds'
+        licenses = ['MIT']
+        vcsUrl = 'https://github.com/alphagov/gds_metrics_dropwizard.git'
+        version {
+            name = '0.0.1'
+        }
+    }
+}
 
 jar {
     manifest {
@@ -16,7 +38,7 @@ jar {
     }
 
     baseName = 'gds-metrics-dropwizard'
-    version = '1.0.0'
+    version = '0.0.1'
 }
 
 repositories {
