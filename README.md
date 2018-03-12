@@ -113,6 +113,15 @@ While common metrics are recorded by default, you can also:
 
 You can read more about the different types of metrics available in the [Prometheus documentation][].
 
+## Contributing
+
+GDS Reliability Engineering welcome contributions. We'd appreciate it if you write tests with your changes and document them where appropriate, this will help us review them quickly.
+
+## Licence
+
+This project is licensed under the [MIT License][].
+
+
 
 [Dropwizard]: http://www.dropwizard.io/
 [Prometheus]: https://prometheus.io/
@@ -126,3 +135,4 @@ You can read more about the different types of metrics available in the [Prometh
 [Dropwizard Metrics]: http://metrics.dropwizard.io/
 [Prometheus interface]: https://github.com/prometheus/client_java#instrumenting
 [Prometheus documentation]: https://prometheus.io/docs/concepts/metric_types/
+[MIT License]: https://github.com/alphagov/gds_metrics_dropwizard/blob/master/LICENSE
