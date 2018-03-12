@@ -123,5 +123,6 @@ You can read more about the different types of metrics available in the [Prometh
 [Maven]: https://maven.apache.org/
 [PaaS]: https://www.cloud.service.gov.uk/
 [environment variable]: https://docs.cloud.service.gov.uk/#environment-variables
+[Dropwizard Metrics]: http://metrics.dropwizard.io/
 [Prometheus interface]: https://github.com/prometheus/client_java#instrumenting
 [Prometheus documentation]: https://prometheus.io/docs/concepts/metric_types/
