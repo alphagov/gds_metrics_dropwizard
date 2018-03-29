@@ -2,7 +2,15 @@
 
 GDS Metrics are in Alpha and these instructions are subject to change.
 
-GDS [Dropwizard][] metrics enable your Java web app to export performance data to [Prometheus][] and can be added to your app using this library. Once you’ve added the library, metrics data is served from an endpoint on your app and is scraped by Prometheus. This data can be turned into performance dashboards using [Grafana][].
+The GDS [Dropwizard][] metrics library enables your Java web app to export performance data to [Prometheus][] and can be added to your app using this library. 
+
+The library is a thin wrapper around the [Prometheus instrumentation library for JVM applications][] that:
+
+* adds a MetricsBundle you can include in your dropwizard app
+* fixes [label naming][] so it's consistent across different app types
+* protects your /metrics endpoint with basic HTTP authentication for apps deployed to GOV.UK PaaS 
+
+Once you’ve added the library, metrics data is served from an endpoint on your app and is scraped by Prometheus. This data can be turned into performance dashboards using [Grafana][].
 
 You can read more about the Reliability Engineering monitoring solution [here][].
 
@@ -15,17 +23,7 @@ Before using GDS metrics you should have:
 
 ## How to build your project
 
-To use GDS metrics you must:
-
-1. Run the following [Gradle][] command to build your project:
-
-    `./gradlew build`
-
-2. Publish to a [Maven][] local repository, by running:
-
-    `gradle publishToMavenLocal`
-
-3. Add the GDS metrics library to where your project is stored by adding:
+1. Add the GDS metrics library to where your project is stored by adding:
 
     Maven
     ```
@@ -45,7 +43,7 @@ To use GDS metrics you must:
     }
     ```
 
-4. Add your library as a dependency to your project.
+2. Add your library as a dependency to your project.
 
     Maven
     ```
@@ -61,7 +59,7 @@ To use GDS metrics you must:
     implementation 'engineering.gds-reliability:gds-metrics-dropwizard:1.0.0'
     ```
 
-5. When your app is deployed to the PaaS, you can add an environment variable so Prometheus can discover your app’s metrics, for example:
+By default, metrics will be exposed at the path /metrics. You can change this with an environment variable like this:
 
     ```
     PROMETHEUS_METRICS_PATH=/metrics
@@ -78,7 +76,13 @@ To use GDS metrics you must:
     }
     ```
 
-2. Disable app security for the metrics path. If your application already has security (authentication) implemented, the metrics path defined in the variable `PROMETHEUS_METRICS_PATH` should be excluded because this path already has its own security. `Configuration.getInstance.getPrometheusMetricsPath()` can be used to recover the proper value.
+2. If your app requires full authentication, disable the basic authentication for the metrics path (by default, /metrics). The Dropwizard library enables HTTP basic authentication for the metrics path so Prometheus can scrape the metrics.
+
+To recover the original value, use:
+
+`Configuration.getInstance.getPrometheusMetricsPath()`
+
+Your metrics endpoint will now be available in your production environment. Citizens won’t see your metrics in production.
 
 ## Running on GOV.UK Platform as a Service (PaaS)
 
@@ -93,6 +97,8 @@ Where `your-app-name` is the name of your app.
 Your metrics endpoint will now be available in your production environment. Citizens won’t see your metrics in production as this endpoint is automatically protected with authentication.
 
 ## How to setup extended metrics
+
+<placeholder to actually list what metrics you’ll get>
 
 Extended metrics are based on the project [Dropwizard Metrics][], you can choose to activate them if you want to build custom Grafana dashboards.
 
@@ -136,3 +142,5 @@ This project is licensed under the [MIT License][].
 [Prometheus interface]: https://github.com/prometheus/client_java#instrumenting
 [Prometheus documentation]: https://prometheus.io/docs/concepts/metric_types/
 [MIT License]: https://github.com/alphagov/gds_metrics_dropwizard/blob/master/LICENSE
+[Prometheus instrumentation library for JVM applications]: https://github.com/prometheus/client_java
+[label naming]: https://prometheus.io/docs/practices/naming/#labels
