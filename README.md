@@ -9,7 +9,7 @@ The library can be added to your web app to capture metrics about how it's perfo
 `./gradlew build`
 
 ## Publish to a Maven local repositoty
-`gradle publishToMavenLocal`
+`./gradlew publishToMavenLocal`
 
 ## Adding the library to your project
 
