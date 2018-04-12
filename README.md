@@ -1,108 +1,146 @@
-# GDS Metrics: Dropwizard version
-Library for [prometheus](https://prometheus.io/) instrumentation in [Dropwizard](http://www.dropwizard.io) based apps.
+# GDS metrics for Dropwizard apps
 
-## Overview
+GDS Metrics are in Alpha and these instructions are subject to change.
 
-The library can be added to your web app to capture metrics about how it's performing. These metrics are served from an endpoint on your app and can be scraped by Prometheus and turned into Grafana dashboards.
+The GDS [Dropwizard][] metrics library enables your Java web app to export performance data to [Prometheus][] and can be added to your app using this library. 
 
-## Build the project
-`./gradlew build`
+The library is a thin wrapper around the [Prometheus instrumentation library for JVM applications][] that:
 
-## Publish to a Maven local repositoty
-`./gradlew publishToMavenLocal`
+* adds a MetricsBundle you can include in your dropwizard app
+* fixes [label naming][] so it's consistent across different app types
+* protects your /metrics endpoint with basic HTTP authentication for apps deployed to GOV.UK PaaS 
 
-## Adding the library to your project
+Once you’ve added the library, metrics data is served from an endpoint on your app and is scraped by Prometheus. This data can be turned into performance dashboards using [Grafana][].
 
-Add the online repository where the library is stored.
+You can read more about the Reliability Engineering monitoring solution [here][].
 
-### Maven
+## Before using GDS metrics
 
-```
-<repositories>
-    <repository>
-        <id>reliability-engineering-repository</id>
-        <name>Repository containing reliability enginieering dependencies</name>
-        <url>https://dl.bintray.com/reliability-engineering-gds/gds_metrics_dropwizard</url>
-    </repository>
-</repositories>
-``` 
+Before using GDS metrics you should have:
 
-### Gradle
-```
-repositories {
-    maven { url "https://dl.bintray.com/reliability-engineering-gds/gds_metrics_dropwizard" }
-}
-```
+* created a Java app
+* deployed that Java app to [GOV.UK Platform as a Service (PaaS)][]
 
-Add the library as dependency to your project.
+## How to build your project
 
-### Maven
-```
-<dependency>
-    <groupdId>engineering.gds-reliability</groupdId>
-    <artifactId>gds-metrics-dropwizard</artifactId>
-    <version>1.0.0</version>
-</dependency>
-```
+1. Add the GDS metrics library to where your project is stored by adding:
 
-### Gradle
-```
-implementation 'engineering.gds-reliability:gds-metrics-dropwizard:1.0.0'
-```
+    Maven
+    ```
+    <repositories>
+        <repository>
+            <id>reliability-engineering-repository</id>
+            <name>Repository containing reliability enginieering dependencies</name>
+            <url>https://dl.bintray.com/reliability-engineering-gds/gds_metrics_dropwizard</url>
+        </repository>
+    </repositories>
+    ```
 
-### Configure the app to be used by prometheus
+    Gradle
+    ```
+    repositories {
+        maven { url "https://dl.bintray.com/reliability-engineering-gds/gds_metrics_dropwizard" }
+    }
+    ```
 
-1. Your application must be deployed on [PaaS](https://www.cloud.service.gov.uk/).
-2. Add the environment variable `PROMETHEUS_METRICS_PATH`. Example:
-```
-PROMETHEUS_METRICS_PATH=/metrics
-```
-3. If you want to have Dropwizard extended metrics enabled, define the `ENABLE_DROPWIZARD_METRICS` environment variable. Example:
-```
-ENABLE_DROPWIZARD_METRICS=true
-```
+2. Add your library as a dependency to your project.
 
-### Changes in your project
+    Maven
+    ```
+    <dependency>
+        <groupdId>engineering.gds-reliability</groupdId>
+        <artifactId>gds-metrics-dropwizard</artifactId>
+        <version>1.0.0</version>
+    </dependency>
+    ```
+
+    Gradle
+    ```
+    implementation 'engineering.gds-reliability:gds-metrics-dropwizard:1.0.0'
+    ```
+
+By default, metrics will be exposed at the path /metrics. You can change this with an environment variable like this:
+
+    ```
+    PROMETHEUS_METRICS_PATH=/metrics
+    ```
+
+## How to Change your project
 
 1. Add the `MetricsBundle`.
-```
-public void initialize(final Bootstrap<ExampleConfiguration> bootstrap) {
-    ...
-    bootstrap.addBundle(new MetricsBundle());
-    ...
-}
-```
+    ```
+    public void initialize(final Bootstrap<ExampleConfiguration> bootstrap) {
+        ...
+        bootstrap.addBundle(new MetricsBundle());
+        ...
+    }
+    ```
 
-2. Disable app security for the metrics path.
-If your application already has security (authentication) implemented, the metrics path defined in the variable `PROMETHEUS_METRICS_PATH` should be excluded because this path already has its own security. `Configuration.getInstance.getPrometheusMetricsPath()` can be used to recover the proper value.
+2. If your app requires full authentication, disable the basic authentication for the metrics path (by default, /metrics). The Dropwizard library enables HTTP basic authentication for the metrics path so Prometheus can scrape the metrics.
 
-## Running on PaaS
+To recover the original value, use:
 
-If your app runs on the [GOV.UK PaaS](https://www.cloud.service.gov.uk/), you'll need to set the environment variable with:
+`Configuration.getInstance.getPrometheusMetricsPath()`
+
+Your metrics endpoint will now be available in your production environment. Citizens won’t see your metrics in production.
+
+## Running on GOV.UK Platform as a Service (PaaS)
+
+The install steps for GDS Metrics only apply to a project on your local machine. If your app runs on [PaaS][], you'll need to set the [environment variable][] by running:
 
 ```
 $ cf set-env your-app-name PROMETHEUS_METRICS_PATH /metrics
 ```
 
-This command makes the metrics endpoint available in production, whereas the setup steps above only applied temporarily to the server on your local machine.
+Where `your-app-name` is the name of your app.
 
-In production, this endpoint is automatically protected with authentication. Citizens will not be able to see your metrics.
+Your metrics endpoint will now be available in your production environment. Citizens won’t see your metrics in production as this endpoint is automatically protected with authentication.
+
+## How to setup extended metrics
+
+<placeholder to actually list what metrics you’ll get>
+
+Extended metrics are based on the project [Dropwizard Metrics][], you can choose to activate them if you want to build custom Grafana dashboards.
+
+You can also enable Dropwizard extended metrics by running this command:
 
 ```
 $ cf set-env your-app-name ENABLE_DROPWIZARD_METRICS true
 ```
 
-This command makes the Dropwizard extended metrics available, obtaining a more verbose metrics.
+Where `your-app-name` is the name of your app.
 
-## Extended metrics
+## How to configure custom metrics
 
-By default the application activates some default metrics making them available to the user. In addition, the library offers the possibility (see steps above) to enable the Dropwizard metrics. This metrics are based on the project [Dropwizard Metrics](http://metrics.dropwizard.io)
+While common metrics are recorded by default, you can also:
 
-The users can choose to activate them or not if they consider they bring something interesting or they want to build some custom Grafana dashboards. 
+* record your own metrics such as how many users are signed up for your service, or how many emails it's sent
+* use the [Prometheus interface][] to set your own metrics as the metrics Dropwizard library is built on top of the `prometheus_java_client`
 
-## Adding custom metrics
-This step is optional.
+You can read more about the different types of metrics available in the [Prometheus documentation][].
 
-By default, common metrics will be recorded, but you can record your own metrics, too. You might want to capture how many users are signed up for your service or how many emails are sent.
+## Contributing
 
-The library is built on top of the `prometheus_java_client`, so you can use the [interface it provides](https://github.com/prometheus/client_java#instrumenting) for this. There's more documentation on types of metric [here](https://prometheus.io/docs/concepts/metric_types/).
+GDS Reliability Engineering welcome contributions. We'd appreciate it if you write tests with your changes and document them where appropriate, this will help us review them quickly.
+
+## Licence
+
+This project is licensed under the [MIT License][].
+
+
+
+[Dropwizard]: http://www.dropwizard.io/
+[Prometheus]: https://prometheus.io/
+[Grafana]: https://grafana.com/
+[here]: https://reliability-engineering.cloudapps.digital/#reliability-engineering
+[GOV.UK Platform as a Service (PaaS)]: https://www.cloud.service.gov.uk/
+[Gradle]: https://gradle.org/
+[Maven]: https://maven.apache.org/
+[PaaS]: https://www.cloud.service.gov.uk/
+[environment variable]: https://docs.cloud.service.gov.uk/#environment-variables
+[Dropwizard Metrics]: http://metrics.dropwizard.io/
+[Prometheus interface]: https://github.com/prometheus/client_java#instrumenting
+[Prometheus documentation]: https://prometheus.io/docs/concepts/metric_types/
+[MIT License]: https://github.com/alphagov/gds_metrics_dropwizard/blob/master/LICENSE
+[Prometheus instrumentation library for JVM applications]: https://github.com/prometheus/client_java
+[label naming]: https://prometheus.io/docs/practices/naming/#labels
