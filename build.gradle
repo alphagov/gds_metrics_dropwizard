@@ -20,9 +20,9 @@ bintray {
     configurations = ['archives']
 
     pkg {
-        repo = 'gds_metrics_dropwizard'
-        name = 'gds_metrics_dropwizard'
-        userOrg = 'reliability-engineering-gds'
+        repo = 'maven'
+        name = 'gds-metrics-dropwizard'
+        userOrg = 'alphagov'
         licenses = ['MIT']
         vcsUrl = 'https://github.com/alphagov/gds_metrics_dropwizard.git'
         version {
