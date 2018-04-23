@@ -23,7 +23,9 @@ import java.util.Objects;
  * io.prometheus.client.filter.MetricsFilter, this file is also Apache
  * licensed.
  *
- * See the original class for more documentation.
+ * See the
+ * <a href="https://github.com/prometheus/client_java/blob/40d179d0d6b3f6521a5d1397c42024f04ccc3e52/simpleclient_servlet/src/main/java/io/prometheus/client/filter/MetricsFilter.java">original class</a>
+ * for more documentation.
  */
 public class RequestDurationFilter implements Filter {
 
