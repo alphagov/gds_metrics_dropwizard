@@ -16,47 +16,16 @@ import java.io.IOException;
 import java.util.Objects;
 
 /**
- * Class based on MetricsFilter class documented below
- * The class adds the label host to the metrics
+ * This class is based on io.prometheus.client.filter.MetricsFilter,
+ * but also adds the Host header as a label to the emitted metrics.
  *
- * The MetricsFilter class exists to provide a high-level filter that enables tunable collection of metrics for Servlet
- * performance.
+ * Because this file is based on the Apache-licensed
+ * io.prometheus.client.filter.MetricsFilter, this file is also Apache
+ * licensed.
  *
- * The Histogram name itself is required, and configured with a {@code metric-name} init parameter.
- *
- * The help parameter, configured with the {@code help} init parameter, is not required but strongly recommended.
- *
- * By default, this filter will provide metrics that distinguish only 1 level deep for the request path
- * (including servlet context path), but can be configured with the {@code path-components} init parameter. Any number
- * provided that is less than 1 will provide the full path granularity (warning, this may affect performance).
- *
- * The Histogram buckets can be configured with a {@code buckets} init parameter whose value is a comma-separated list
- * of valid {@code double} values.
- *
- * {@code
- * <filter>
- *   <filter-name>prometheusFilter</filter-name>
- *   <filter-class>net.cccnext.ssp.portal.spring.filter.PrometheusMetricsFilter</filter-class>
- *   <init-param>
- *      <param-name>metric-name</param-name>
- *      <param-value>webapp_metrics_filter</param-value>
- *   </init-param>
- *    <init-param>
- *      <param-name>help</param-name>
- *      <param-value>The time taken fulfilling servlet requests</param-value>
- *   </init-param>
- *   <init-param>
- *      <param-name>buckets</param-name>
- *      <param-value>0.005,0.01,0.025,0.05,0.075,0.1,0.25,0.5,0.75,1,2.5,5,7.5,10</param-value>
- *   </init-param>
- *   <init-param>
- *      <param-name>path-components</param-name>
- *      <param-value>0</param-value>
- *   </init-param>
- * </filter>
- * }
- *
- * @author Andrew Stuart &lt;andrew.stuart2@gmail.com&gt;
+ * See the
+ * <a href="https://github.com/prometheus/client_java/blob/40d179d0d6b3f6521a5d1397c42024f04ccc3e52/simpleclient_servlet/src/main/java/io/prometheus/client/filter/MetricsFilter.java">original class</a>
+ * for more documentation.
  */
 public class RequestDurationFilter implements Filter {
 
