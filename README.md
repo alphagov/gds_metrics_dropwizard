@@ -110,6 +110,28 @@ $ cf set-env your-app-name ENABLE_DROPWIZARD_METRICS true
 
 Where `your-app-name` is the name of your app.
 
+## Adding logging metrics
+
+To record how many log lines you are emitting, add an appender of type `instrumented` to your config.yaml:
+
+```yaml
+logging:
+  # <... logging configuration ...>
+  appenders:
+    # <... other appenders go here>
+    - type: instrumented
+```
+
+This will add a metric named `logback_appender_total` which records the total number of log messages at each logging level.  For example:
+
+```
+logback_appender_total{level="debug",} 0.0
+logback_appender_total{level="warn",} 1.0
+logback_appender_total{level="trace",} 0.0
+logback_appender_total{level="error",} 0.0
+logback_appender_total{level="info",} 14.0
+```
+
 ## How to configure custom metrics
 
 While common metrics are recorded by default, you can also:
