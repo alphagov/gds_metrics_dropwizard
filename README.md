@@ -31,7 +31,7 @@ Before using GDS metrics you should have:
         <repository>
             <id>reliability-engineering-repository</id>
             <name>Repository containing reliability enginieering dependencies</name>
-            <url>https://dl.bintray.com/reliability-engineering-gds/gds_metrics_dropwizard</url>
+            <url>https://dl.bintray.com/alphagov/maven</url>
         </repository>
     </repositories>
     ```
@@ -39,7 +39,7 @@ Before using GDS metrics you should have:
     Gradle
     ```
     repositories {
-        maven { url "https://dl.bintray.com/reliability-engineering-gds/gds_metrics_dropwizard" }
+        maven { url "https://dl.bintray.com/alphagov/maven" }
     }
     ```
 
@@ -50,13 +50,13 @@ Before using GDS metrics you should have:
     <dependency>
         <groupdId>engineering.gds-reliability</groupdId>
         <artifactId>gds-metrics-dropwizard</artifactId>
-        <version>1.0.0</version>
+        <version>0.0.1</version>
     </dependency>
     ```
 
     Gradle
     ```
-    implementation 'engineering.gds-reliability:gds-metrics-dropwizard:1.0.0'
+    implementation 'engineering.gds-reliability:gds-metrics-dropwizard:0.0.1'
     ```
 
 By default, metrics will be exposed at the path /metrics. You can change this with an environment variable like this:
