@@ -3,25 +3,34 @@ package engineering.reliability.gds.metrics.bundle;
 import com.codahale.metrics.MetricRegistry;
 import engineering.reliability.gds.metrics.config.Configuration;
 import engineering.reliability.gds.metrics.filter.AuthenticationFilter;
-import engineering.reliability.gds.metrics.filter.RequestDurationFilter;
 import engineering.reliability.gds.metrics.filter.RequestCountFilter;
+import engineering.reliability.gds.metrics.filter.RequestDurationFilter;
 import io.dropwizard.Bundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.prometheus.client.CollectorRegistry;
 import io.prometheus.client.dropwizard.DropwizardExports;
 import io.prometheus.client.exporter.MetricsServlet;
-import io.prometheus.client.hotspot.ClassLoadingExports;
-import io.prometheus.client.hotspot.GarbageCollectorExports;
-import io.prometheus.client.hotspot.MemoryPoolsExports;
-import io.prometheus.client.hotspot.StandardExports;
-import io.prometheus.client.hotspot.ThreadExports;
-import io.prometheus.client.hotspot.VersionInfoExports;
+import io.prometheus.client.hotspot.DefaultExports;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import java.util.EnumSet;
 
+/**
+ * MetricsBundle
+ *
+ * This is a Dropwizard bundle that adds prometheus instrumentation to a dropwizard app. in particular:
+ * <ul>
+ *  <li> it registers the dropwizard metrics (ie com.codahale.metrics metrics) with the prometheus registry
+ *  <li> it registers the {@link DefaultExports} with the prometheus registry
+ *  <li> it adds {@link RequestCountFilter} to record a count of requests by code, path, host, and method
+ *  <li> it adds {@link RequestDurationFilter} to record a histogram of request durations by code, path, host, and method
+ *  <li> it registers a prometheus {@link MetricsServlet} to serve metrics on /metrics (or wherever configured) on the app port
+ *    <li> it adds {@link AuthenticationFilter} to ensure requests to the metrics endpoint based on the application_id
+ *      in the VCAP_APPLICATION environment variable
+ * </ul>
+ */
 public class MetricsBundle implements Bundle {
 
 	final Configuration configuration = Configuration.getInstance();
@@ -35,12 +44,7 @@ public class MetricsBundle implements Bundle {
 			CollectorRegistry.defaultRegistry.register(new DropwizardExports(metrics));
 		}
 
-		CollectorRegistry.defaultRegistry.register(new ClassLoadingExports());
-		CollectorRegistry.defaultRegistry.register(new GarbageCollectorExports());
-		CollectorRegistry.defaultRegistry.register(new MemoryPoolsExports());
-		CollectorRegistry.defaultRegistry.register(new StandardExports());
-		CollectorRegistry.defaultRegistry.register(new ThreadExports());
-		CollectorRegistry.defaultRegistry.register(new VersionInfoExports());
+		DefaultExports.initialize();
 	}
 
 	@Override
