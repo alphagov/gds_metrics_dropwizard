@@ -1,39 +1,17 @@
-plugins {
-    id "com.jfrog.bintray" version "1.7.3"
-}
-
 repositories {
     mavenCentral()
 }
 
 apply plugin: 'java-library'
-apply plugin: 'maven-publish'
 apply plugin: 'maven'
 
 group = 'engineering.gds-reliability'
-version = '0.0.2'
+version = System.getenv('TRAVIS_TAG') ?: '0.0.2'
 
 description = ' Library for prometheus instrumentation in Dropwizard based apps.'
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-
-bintray {
-    user = System.getenv('BINTRAY_USER')
-    key = System.getenv('BINTRAY_KEY')
-    configurations = ['archives']
-
-    pkg {
-        repo = 'maven'
-        name = 'gds-metrics-dropwizard'
-        userOrg = 'alphagov'
-        licenses = ['MIT']
-        vcsUrl = 'https://github.com/alphagov/gds_metrics_dropwizard.git'
-        version {
-            name = '0.0.1'
-        }
-    }
-}
 
 test {
     dependsOn << compileTestJava
@@ -62,7 +40,6 @@ jar {
     }
 
     baseName = 'gds-metrics-dropwizard'
-    version = '0.0.1'
 }
 
 dependencies {
@@ -82,12 +59,4 @@ dependencies {
     testImplementation 'org.powermock:powermock-module-junit4:1.7.3'
     testImplementation 'io.dropwizard:dropwizard-testing:1.2.3'
     testImplementation 'org.eclipse.jetty:jetty-servlet:9.4.8.v20171121'
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
 }

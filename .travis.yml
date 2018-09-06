@@ -1,8 +1,18 @@
 language: java
 cache:
   directories:
-  - $HOME/.gradle/caches
-  - $HOME/.gradle/wrapper
-  - $HOME/.m2
+  - "$HOME/.gradle/caches"
+  - "$HOME/.gradle/wrapper"
+  - "$HOME/.m2"
 jdk:
 - oraclejdk8
+deploy:
+  provider: bintray
+  file: build/libs/gds-metrics-dropwizard-${TRAVIS_TAG}.jar
+  user: philippotter
+  key:
+    secure: nMBHHzf93uKh8iQTbSAzV9U9C773mzoQvI9NKnL7IrkAW2OVmxFEfsmvnlmhiFBI1gJkYzK8gIwMddJ4sHiwHKSoRIiMOtdw2LhfJAmQwrRWutfaoEYJHivIcOArdN5y0fz7Ocb0/ZMmByPA3QUpsxJxtdiDAPFRZyx/JcO/o2P2BH52y7jUwJ23AFGh0+L8a6aN3p7ERGcMIRWSP1xJAcmZkN+KkR+QSwQ+Oa9FcqXorH3yqSoeXxgENyv0M77K8zlUkFUdhndF91aKpz88fIloiNiGuX9WPyqTOyiBIQkSuC0Kpz3ksBWdZH2v7tj5u40gQiCpvEcE/MVJ+60tV1sb5QZFC/ZDIQe5DLeKazTQJExgHurhl57rvCsuufvQv7CJDcNmRBS32SZo8jtUQDRiFqHRoe94qeoxzrWNh7+mfP/NWsz98epc3vaY8CGZCEe4+jBthqbLHW0S1kYDbF+CAZiFDf8vI1XiTs94Gt1UoDA32HBx2A/asvRse7wgdkrtRe6VHicxPuDONKdIAl2zeAA0UPfY7O+cwKKtwgoGhFdQVac/4LvyG+/mDodwnQF/33cGmpF7pPqonu9agAUjjR2wz9tYITb/EQfHc8Io4aeWLZidRmj7tHf56XHiFozLssfi1vtawCrlx7dLkfVBTswOFuxHt0aVKfScGdk=
+  skip_cleanup: true
+  dry_run: true
+  on:
+    tags: true
