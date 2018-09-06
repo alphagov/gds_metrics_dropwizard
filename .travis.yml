@@ -1,8 +1,17 @@
 language: java
 cache:
   directories:
-  - $HOME/.gradle/caches
-  - $HOME/.gradle/wrapper
-  - $HOME/.m2
+  - "$HOME/.gradle/caches"
+  - "$HOME/.gradle/wrapper"
+  - "$HOME/.m2"
 jdk:
 - oraclejdk8
+deploy:
+  provider: script
+  script: bash scripts/travis_deploy.sh
+  on:
+    tags: true
+env:
+  global:
+    - BINTRAY_USER=philippotter
+    - secure: U/5hfjfuGlF8cj+tCvkxJU8UvMAX4IujiXGP771eP1XBauVgBYKhF0pctXzBmiBNR4Wn6l1KspQXK6nwg4f6Y8T2KMYk/Rqxp8KJjbyPv0pIIcOQpZ2VP79UCa/aMM3lNVEkr1HWmOED5yZFZmASaoruhlcu1U8dGWOSMAgLGmat3sihFpmCR5v6q8s+nn8z6PQhwCcYyQ8wWqxzi+aVNGJXFIOoxLxDBsFMgbUuQMmr4F5W4PS6QsUXUpVCXytGHdKmhJqfcnRrNtxODpFmd80xQ9j4nwD7L0glmqWsgFrHDzSPOUgkjyyGAtXkCHS6J6A2rFMlVSiHT5KTG7tBpskHO611+loDQEbGvDBvkv7DRoa4RSGBnvjaMafbQQtC0OlprKT0qcNturym8QQtyCduF0PMsxOMeHAIR3HaH0RHLEXUBtovAbpx8ZX1X19FnEahDIiu/82YP1Is5S/fug91XIBaSdnWyMWJMGO9y8euH81nIFX7Rk0kcbjvKa/B6VIj+r8AHlV38CYHlb0PnTeDSkM6SdJV/kXPg5gYTqCWCWi3DslHqrRNdBBy8dJ5T3rOpwzBAEMpIchj61Zac6fUvE5xLFIcZ57K7ScPOAbybQCt6giJ9Cq9bKQHm2WxYcDdT5z46zqFMZ1XuZ+QlGTw54i0cjaAly4XJizn2Bk=
