@@ -7,7 +7,7 @@ apply plugin: 'maven-publish'
 apply plugin: 'maven'
 
 group = 'engineering.gds-reliability'
-version = '0.0.1'
+version = '0.0.2'
 
 description = ' Library for prometheus instrumentation in Dropwizard based apps.'
 
