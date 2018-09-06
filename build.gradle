@@ -2,6 +2,10 @@ plugins {
     id "com.jfrog.bintray" version "1.7.3"
 }
 
+repositories {
+    mavenCentral()
+}
+
 apply plugin: 'java-library'
 apply plugin: 'maven-publish'
 apply plugin: 'maven'
@@ -59,11 +63,6 @@ jar {
 
     baseName = 'gds-metrics-dropwizard'
     version = '0.0.1'
-}
-
-repositories {
-    mavenLocal()
-    jcenter()
 }
 
 dependencies {
