@@ -123,6 +123,16 @@ You can read more about the different types of metrics available in the [Prometh
 
 GDS Reliability Engineering welcome contributions. We'd appreciate it if you write tests with your changes and document them where appropriate, this will help us review them quickly.
 
+## Releasing a new version
+
+To release a new version:
+
+ - bump the version in gradle.properties and the dependencies in the README
+   and commit
+ - tag with the new version number and push the tag (eg `git tag 0.1.3; git push --tags`)
+ - travis will build and deploy the new version to bintray
+ - bump the version in gradle.properties to the next SNAPSHOT (eg `0.1.3-SNAPSHOT`)
+
 ## Licence
 
 This project is licensed under the [MIT License][].

@@ -11,7 +11,6 @@ apply plugin: 'maven-publish'
 apply plugin: 'maven'
 
 group = 'engineering.gds-reliability'
-version = '0.0.2'
 
 description = ' Library for prometheus instrumentation in Dropwizard based apps.'
 
@@ -29,9 +28,6 @@ bintray {
         userOrg = 'alphagov'
         licenses = ['MIT']
         vcsUrl = 'https://github.com/alphagov/gds_metrics_dropwizard.git'
-        version {
-            name = '0.0.1'
-        }
     }
 }
 
@@ -62,7 +58,6 @@ jar {
     }
 
     baseName = 'gds-metrics-dropwizard'
-    version = '0.0.1'
 }
 
 dependencies {
