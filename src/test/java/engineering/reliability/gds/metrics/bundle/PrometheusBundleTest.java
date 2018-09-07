@@ -31,23 +31,26 @@ public class PrometheusBundleTest {
     private final Client client = new JerseyClientBuilder().build();
 
     @Test
-    public void aMetricIsLogged() {
+    public void aDropwizardResourceTimerMetricIsLogged() {
         final Response response = client.target("http://localhost:" + appRuleWithMetrics.getAdminPort() + PROMETHEUS_METRICS_RESOURCE)
                 .request()
                 .get();
         assertThat(response.getStatus()).isEqualTo(200);
-        // should add a better check here but I don't know what is worth adding
+
         assertThat(response.readEntity(String.class)).contains("engineering_reliability_gds_metrics_support_TestResource_get_count");
     }
 
     @Test
-    public void noJvmMetricsAreLogged() {
+    public void noDropwizardJvmMetricsAreLogged() {
         final Response response = client.target("http://localhost:" + appRuleWithMetrics.getAdminPort() + PROMETHEUS_METRICS_RESOURCE)
                 .request()
                 .get();
         assertThat(response.getStatus()).isEqualTo(200);
-        // there are jvm metrics in the output, so unsure here what are the values that should be excluded
-        assertThat(response.readEntity(String.class)).doesNotContain("jvm");
+
+        // see comment on PrometheusBundle.isNotJvmMetric()
+        String entity = response.readEntity(String.class);
+        assertThat(entity).doesNotContain("jvm_threads_daemon_count");
+        assertThat(entity).doesNotContain("Generated from Dropwizard metric import (metric=jvm.threads.daemon.count");
     }
 
     @Test
