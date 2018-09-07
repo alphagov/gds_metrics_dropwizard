@@ -2,13 +2,13 @@
 
 GDS Metrics are in Alpha and these instructions are subject to change.
 
-The GDS [Dropwizard][] metrics library enables your Java web app to export performance data to [Prometheus][] and can be added to your app using this library. 
+The GDS [Dropwizard][] metrics library enables your Java web app to export performance data to [Prometheus][] and can be added to your app using this library.
 
 The library is a thin wrapper around the [Prometheus instrumentation library for JVM applications][] that:
 
 * adds a MetricsBundle you can include in your dropwizard app
 * fixes [label naming][] so it's consistent across different app types
-* protects your /metrics endpoint with basic HTTP authentication for apps deployed to GOV.UK PaaS 
+* protects your /metrics endpoint with basic HTTP authentication for apps deployed to GOV.UK PaaS
 
 Once you’ve added the library, metrics data is served from an endpoint on your app and is scraped by Prometheus. This data can be turned into performance dashboards using [Grafana][].
 
@@ -50,13 +50,13 @@ Before using GDS metrics you should have:
     <dependency>
         <groupdId>engineering.gds-reliability</groupdId>
         <artifactId>gds-metrics-dropwizard</artifactId>
-        <version>0.0.1</version>
+        <version>0.1.0</version>
     </dependency>
     ```
 
     Gradle
     ```
-    implementation 'engineering.gds-reliability:gds-metrics-dropwizard:0.0.1'
+    implementation 'engineering.gds-reliability:gds-metrics-dropwizard:0.1.0'
     ```
 
 By default, metrics will be exposed at the path /metrics. You can change this with an environment variable like this:
