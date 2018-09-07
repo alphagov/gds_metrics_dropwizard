@@ -2,6 +2,10 @@ plugins {
     id "com.jfrog.bintray" version "1.7.3"
 }
 
+repositories {
+    mavenCentral()
+}
+
 apply plugin: 'java-library'
 apply plugin: 'maven-publish'
 apply plugin: 'maven'
@@ -31,6 +35,26 @@ bintray {
     }
 }
 
+test {
+    dependsOn << compileTestJava
+    testLogging {
+        events "skipped", "failed", "standardError"
+        showCauses true
+        showExceptions true
+        showStackTraces true
+        exceptionFormat "full"
+
+        afterSuite { desc, result ->
+            if (!desc.parent) { // will match the outermost suite
+                def output = "Results: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)"
+                def startItem = '|  ', endItem = '  |'
+                def repeatLength = startItem.length() + output.length() + endItem.length()
+                println('\n' + ('-' * repeatLength) + '\n' + startItem + output + endItem + '\n' + ('-' * repeatLength))
+            }
+        }
+    }
+}
+
 jar {
     manifest {
         attributes('Implementation-Title': project.name,
@@ -39,11 +63,6 @@ jar {
 
     baseName = 'gds-metrics-dropwizard'
     version = '0.0.1'
-}
-
-repositories {
-    mavenLocal()
-    jcenter()
 }
 
 dependencies {

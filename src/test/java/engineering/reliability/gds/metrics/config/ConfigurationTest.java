@@ -16,7 +16,6 @@ import static org.powermock.api.mockito.PowerMockito.mockStatic;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Configuration.class})
 public class ConfigurationTest {
 
 	private Configuration configuration;
@@ -39,6 +38,7 @@ public class ConfigurationTest {
 	}
 
 	@Test
+	@PrepareForTest({Configuration.class})
 	public void getApplicationIdFromEnv() {
 		prepareEnvMocks();
 
@@ -56,6 +56,7 @@ public class ConfigurationTest {
 	}
 
 	@Test
+	@PrepareForTest({Configuration.class})
 	public void getPrometheusMetricsPathFromEnv() {
 		prepareEnvMocks();
 
@@ -66,6 +67,7 @@ public class ConfigurationTest {
 	}
 
 	@Test
+	@PrepareForTest({Configuration.class})
 	public void getActiveDropwizardMetricsPathFromEnv() {
 		prepareEnvMocks();
 
@@ -76,6 +78,7 @@ public class ConfigurationTest {
 	}
 
 	@Test
+	@PrepareForTest({Configuration.class})
 	public void checkIfAuthorizationIsEnabled() {
 		prepareEnvMocks();
 
