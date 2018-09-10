@@ -1,7 +1,13 @@
 package engineering.reliability.gds.metrics.bundle;
 
-
-import com.codahale.metrics.*;
+import com.codahale.metrics.Counter;
+import com.codahale.metrics.Gauge;
+import com.codahale.metrics.Histogram;
+import com.codahale.metrics.Meter;
+import com.codahale.metrics.Metric;
+import com.codahale.metrics.MetricFilter;
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.Timer;
 import engineering.reliability.gds.metrics.config.PrometheusConfiguration;
 import io.dropwizard.ConfiguredBundle;
 import io.dropwizard.setup.Bootstrap;
@@ -12,7 +18,6 @@ import io.prometheus.client.exporter.MetricsServlet;
 import io.prometheus.client.hotspot.DefaultExports;
 
 import java.util.SortedMap;
-
 
 /**
  * PrometheusBundle
@@ -39,6 +44,9 @@ import java.util.SortedMap;
  * into one.  For the moment, though, I want something simple that can be used by Verify.
  */
 public class PrometheusBundle implements ConfiguredBundle<PrometheusConfiguration> {
+
+    public static final String PROMETHEUS_METRICS_RESOURCE = "/prometheus/metrics";
+
     @Override
     public void initialize(Bootstrap<?> bootstrap) {
     }
@@ -50,7 +58,7 @@ public class PrometheusBundle implements ConfiguredBundle<PrometheusConfiguratio
             MetricRegistry metrics = new FilteredMetricRegistryView(environment.metrics(), this::isNotJvmMetric);
             CollectorRegistry.defaultRegistry.register(new DropwizardExports(metrics));
             environment.admin().addServlet("metrics", new MetricsServlet())
-                    .addMapping("/prometheus/metrics");
+                    .addMapping(PROMETHEUS_METRICS_RESOURCE);
         }
     }
 
