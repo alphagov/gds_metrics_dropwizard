@@ -12,6 +12,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.core.Response;
 
 import static engineering.reliability.gds.metrics.bundle.PrometheusBundle.PROMETHEUS_METRICS_RESOURCE;
+import static engineering.reliability.gds.metrics.support.TestResource.TEST_RESOURCE_PATH;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class PrometheusBundleTest {
@@ -32,12 +33,23 @@ public class PrometheusBundleTest {
 
     @Test
     public void aDropwizardResourceTimerMetricIsLogged() {
-        final Response response = client.target("http://localhost:" + appRuleWithMetrics.getAdminPort() + PROMETHEUS_METRICS_RESOURCE)
+        Response response = client.target("http://localhost:" + appRuleWithMetrics.getAdminPort() + PROMETHEUS_METRICS_RESOURCE)
                 .request()
                 .get();
         assertThat(response.getStatus()).isEqualTo(200);
+        assertThat(response.readEntity(String.class)).contains("engineering_reliability_gds_metrics_support_TestResource_get_count 0");
 
-        assertThat(response.readEntity(String.class)).contains("engineering_reliability_gds_metrics_support_TestResource_get_count");
+        response = client.target("http://localhost:" + appRuleWithMetrics.getLocalPort() + TEST_RESOURCE_PATH)
+                .request()
+                .get();
+        assertThat(response.getStatus()).isEqualTo(200);
+        assertThat(response.readEntity(String.class)).isEqualTo("hello");
+
+        response = client.target("http://localhost:" + appRuleWithMetrics.getAdminPort() + PROMETHEUS_METRICS_RESOURCE)
+                .request()
+                .get();
+        assertThat(response.getStatus()).isEqualTo(200);
+        assertThat(response.readEntity(String.class)).contains("engineering_reliability_gds_metrics_support_TestResource_get_count 1.0");
     }
 
     @Test
