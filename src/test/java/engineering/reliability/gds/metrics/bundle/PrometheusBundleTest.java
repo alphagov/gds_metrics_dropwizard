@@ -18,13 +18,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PrometheusBundleTest {
 
     @ClassRule
-    public static DropwizardAppRule<TestConfiguration> appRuleWithMetrics = new DropwizardAppRule<>(TestApplication.class, null,
+    public static final DropwizardAppRule<TestConfiguration> appRuleWithMetrics = new DropwizardAppRule<>(TestApplication.class, null,
             ConfigOverride.config("server.applicationConnectors[0].port", "0"),
             ConfigOverride.config("server.adminConnectors[0].port", "0"),
             ConfigOverride.config("prometheusEnabled", "true"));
 
     @ClassRule
-    public static DropwizardAppRule<TestConfiguration> appRuleWithoutMetrics = new DropwizardAppRule<>(TestApplication.class, null,
+    public static final DropwizardAppRule<TestConfiguration> appRuleWithoutMetrics = new DropwizardAppRule<>(TestApplication.class, null,
             ConfigOverride.config("server.applicationConnectors[0].port", "0"),
             ConfigOverride.config("server.adminConnectors[0].port", "0"),
             ConfigOverride.config("prometheusEnabled", "false"));

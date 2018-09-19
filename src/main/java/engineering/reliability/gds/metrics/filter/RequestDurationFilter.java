@@ -30,7 +30,7 @@ import java.util.Objects;
 public class RequestDurationFilter implements Filter {
 
 	static final String PATH_COMPONENT_PARAM = "path-components";
-	static final String HELP_PARAM = "help";
+	private static final String HELP_PARAM = "help";
 	static final String METRIC_NAME_PARAM = "metric-name";
 	static final String BUCKET_CONFIG_PARAM = "buckets";
 

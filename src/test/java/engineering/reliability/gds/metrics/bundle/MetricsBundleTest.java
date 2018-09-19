@@ -32,7 +32,7 @@ public class MetricsBundleTest {
 	private String servletPath = "";
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		when(environment.servlets()).thenReturn(servletEnvironment);
 	}
 

@@ -10,7 +10,7 @@ public class TestConfiguration extends Configuration implements PrometheusConfig
 
     @JsonProperty
     @NotNull
-    public boolean prometheusEnabled = true;
+    private boolean prometheusEnabled = true;
 
     public TestConfiguration() {
     }

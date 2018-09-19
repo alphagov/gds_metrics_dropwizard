@@ -33,7 +33,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 		final List<String> list = headers.get(s);
 
 		if (Objects.nonNull(list)) {
-			return list.stream().findFirst().get();
+			return list.stream().findFirst().orElse(null);
 		}
 
 		return null;
@@ -145,6 +145,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 	}
 
 	@Override
+	@Deprecated
 	public boolean isRequestedSessionIdFromUrl() {
 		throw new RuntimeException("Not implemented");
 	}
@@ -309,6 +310,7 @@ public class MockHttpServletRequest implements HttpServletRequest {
 	}
 
 	@Override
+	@Deprecated
 	public String getRealPath(final String s) {
 		throw new RuntimeException("Not implemented");
 	}

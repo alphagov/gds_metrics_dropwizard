@@ -33,7 +33,7 @@ import java.util.EnumSet;
  */
 public class MetricsBundle implements Bundle {
 
-	final Configuration configuration = Configuration.getInstance();
+	private final Configuration configuration = Configuration.getInstance();
 
 	@Override
 	public void initialize(final Bootstrap<?> bootstrap) {

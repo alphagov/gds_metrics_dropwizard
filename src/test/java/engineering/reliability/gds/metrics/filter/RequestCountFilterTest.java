@@ -17,7 +17,7 @@ import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 public class RequestCountFilterTest {
-    RequestCountFilter f = new RequestCountFilter(
+    private final RequestCountFilter f = new RequestCountFilter(
         "http_server_requests_total", "The count of http requests"
     );
 

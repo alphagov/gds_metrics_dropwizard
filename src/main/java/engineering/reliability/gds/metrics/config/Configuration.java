@@ -68,10 +68,7 @@ public class Configuration {
 	private boolean readDropwizardMetricsActivation() {
 		final String activeDropwizardMetrics = System.getenv("ENABLE_DROPWIZARD_METRICS");
 
-		if (Objects.nonNull(activeDropwizardMetrics) && activeDropwizardMetrics.equals("true")) {
-			return true;
-		}
+		return Objects.nonNull(activeDropwizardMetrics) && activeDropwizardMetrics.equals("true");
 
-		return false;
 	}
 }
