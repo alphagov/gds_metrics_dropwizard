@@ -83,8 +83,8 @@ public class PrometheusBundle implements ConfiguredBundle<PrometheusConfiguratio
      * filters like isNotJvmMetric above.
      */
     private static class FilteredMetricRegistryView extends MetricRegistry {
-        private MetricRegistry metrics;
-        private MetricFilter filter;
+        private final MetricRegistry metrics;
+        private final MetricFilter filter;
 
         private FilteredMetricRegistryView(MetricRegistry metrics, MetricFilter filter) {
             this.metrics = metrics;
@@ -92,6 +92,7 @@ public class PrometheusBundle implements ConfiguredBundle<PrometheusConfiguratio
         }
 
         @Override
+        @SuppressWarnings("rawtypes")
         public SortedMap<String, Gauge> getGauges() {
             return metrics.getGauges(filter);
         }

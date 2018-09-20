@@ -44,7 +44,7 @@ public class ConfigurationTest {
 
 		configuration.populateProperties();
 
-		assertThat("ApplciationId should be equalt to 'something'",
+		assertThat("ApplciationId should be equal to 'something'",
 				configuration.getApplicationId(), equalTo("something"));
 	}
 
@@ -62,7 +62,7 @@ public class ConfigurationTest {
 
 		configuration.populateProperties();
 
-		assertThat("PrometheusMetricsPath should be equalt to '/prometheus'",
+		assertThat("PrometheusMetricsPath should be equal to '/prometheus'",
 				configuration.getPrometheusMetricsPath(), equalTo("/prometheus"));
 	}
 
@@ -73,7 +73,7 @@ public class ConfigurationTest {
 
 		configuration.populateProperties();
 
-		assertThat("activeDropwizardMetrics should be equalt to 'true'",
+		assertThat("activeDropwizardMetrics should be equal to 'true'",
 				configuration.isActiveDropwizardMetrics(), equalTo(true));
 	}
 

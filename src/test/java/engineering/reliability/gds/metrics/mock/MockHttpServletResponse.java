@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Locale;
 
 public class MockHttpServletResponse implements HttpServletResponse {
-	List headerNames = new ArrayList();
-	List headerValues = new ArrayList();
-	PrintWriter pw;
-	int status;
+	private final List<String> headerNames = new ArrayList<>();
+	private final List<String> headerValues = new ArrayList<>();
+	private PrintWriter pw;
+	private int status;
 
 	@Override
 	public void addCookie(final Cookie cookie) {
@@ -38,11 +38,13 @@ public class MockHttpServletResponse implements HttpServletResponse {
 	}
 
 	@Override
+	@Deprecated
 	public String encodeUrl(final String s) {
 		throw new RuntimeException("Not implemented");
 	}
 
 	@Override
+	@Deprecated
 	public String encodeRedirectUrl(final String s) {
 		throw new RuntimeException("Not implemented");
 	}
@@ -143,6 +145,7 @@ public class MockHttpServletResponse implements HttpServletResponse {
 	}
 
 	@Override
+	@Deprecated
 	public void setStatus(final int i, final String s) {
 
 	}
@@ -159,7 +162,7 @@ public class MockHttpServletResponse implements HttpServletResponse {
 		final int index = headerNames.indexOf(s);
 
 		if (index != -1) {
-			return (String) headerValues.get(index);
+			return headerValues.get(index);
 		}
 
 		return null;

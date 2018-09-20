@@ -16,7 +16,8 @@ import java.util.Objects;
 
 public class RequestCountFilter implements Filter {
 	private Counter counter;
-	private String metricName, help;
+	private final String metricName;
+	private String help;
 
 	public RequestCountFilter(String metricName, String help) {
 		this.metricName = metricName;
