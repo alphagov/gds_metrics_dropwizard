@@ -92,6 +92,7 @@ public class PrometheusBundle implements ConfiguredBundle<PrometheusConfiguratio
         }
 
         @Override
+        @SuppressWarnings("rawtypes")
         public SortedMap<String, Gauge> getGauges() {
             return metrics.getGauges(filter);
         }

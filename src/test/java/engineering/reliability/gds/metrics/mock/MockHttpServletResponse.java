@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class MockHttpServletResponse implements HttpServletResponse {
-	private final List headerNames = new ArrayList();
-	private final List headerValues = new ArrayList();
+	private final List<String> headerNames = new ArrayList<>();
+	private final List<String> headerValues = new ArrayList<>();
 	private PrintWriter pw;
 	private int status;
 
@@ -162,7 +162,7 @@ public class MockHttpServletResponse implements HttpServletResponse {
 		final int index = headerNames.indexOf(s);
 
 		if (index != -1) {
-			return (String) headerValues.get(index);
+			return headerValues.get(index);
 		}
 
 		return null;

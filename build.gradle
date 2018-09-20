@@ -87,3 +87,8 @@ publishing {
         }
     }
 }
+
+// from https://mark.koli.ch/fail-build-on-java-compiler-warnings
+tasks.withType(JavaCompile) {
+    options.compilerArgs << "-Xlint:all" << "-Xlint:-processing" << "-Xlint:-serial" << "-Werror"
+}
