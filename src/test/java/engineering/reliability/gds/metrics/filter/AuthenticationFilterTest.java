@@ -1,6 +1,6 @@
 package engineering.reliability.gds.metrics.filter;
 
-import engineering.reliability.gds.metrics.config.Configuration;
+import engineering.reliability.gds.metrics.config.AbstractConfigurationTest;
 import engineering.reliability.gds.metrics.mock.MockHttpServletRequest;
 import engineering.reliability.gds.metrics.mock.MockHttpServletResponse;
 import org.junit.Before;
@@ -9,22 +9,19 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.util.UUID;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertThat;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.when;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({Configuration.class})
-public class AuthenticationFilterTest {
+@RunWith(MockitoJUnitRunner.class)
+public class AuthenticationFilterTest extends AbstractConfigurationTest {
 
 	@InjectMocks
 	private AuthenticationFilter authenticationFilter;
@@ -35,73 +32,60 @@ public class AuthenticationFilterTest {
 	@Mock
 	private FilterConfig config;
 
-	@Mock
-	private Configuration configuration;
-
 	private MockHttpServletRequest request;
 
 	private MockHttpServletResponse response;
 
 	@Before
-	public void setUp() {
+	public void setUp() throws NoSuchFieldException, IllegalAccessException {
 		request = new MockHttpServletRequest();
 		response = new MockHttpServletResponse();
+		clearConfigurationConfiguration();
 	}
 
 	@Test
-	public void notRelevantPath() throws ServletException, IOException {
+	public void notRelevantPath() throws ServletException, IOException, NoSuchFieldException, IllegalAccessException {
 		request.setRequestURI("/index");
-		Mockito.when(configuration.getPrometheusMetricsPath()).thenReturn("/metrics");
+		setConfigurationInEnvironment(null, "/metrics", true);
 
-		prepareConfigurationMock();
 		testFilter();
 
 		assertThat(response.getStatus(), equalTo(200));
 	}
 
 	@Test
-	public void relevantPathAndAuthDisabled() throws ServletException, IOException {
+	public void relevantPathAndAuthDisabled() throws ServletException, IOException, NoSuchFieldException, IllegalAccessException {
 		request.setRequestURI("/metrics");
-		Mockito.when(configuration.getPrometheusMetricsPath()).thenReturn("/metrics");
-		Mockito.when(configuration.isAuthEnable()).thenReturn(false);
+		setConfigurationInEnvironment(null, "/metrics", true);
 
-		prepareConfigurationMock();
 		testFilter();
 
 		assertThat(response.getStatus(), equalTo(200));
 	}
 
 	@Test
-	public void relevantPathAndAuthEnabledWithWrongToken() throws ServletException, IOException {
+	public void relevantPathAndAuthEnabledWithWrongToken() throws ServletException, IOException, NoSuchFieldException, IllegalAccessException {
 		request.setRequestURI("/metrics");
-		request.setHeader("Authorization", "Bearer correct");
-		Mockito.when(configuration.getPrometheusMetricsPath()).thenReturn("/metrics");
-		Mockito.when(configuration.isAuthEnable()).thenReturn(true);
-		Mockito.when(configuration.getApplicationId()).thenReturn("wrong");
+		String correctBearerToken = UUID.randomUUID().toString();
+		String wrongBearerToken = UUID.randomUUID().toString();
+		request.setHeader("Authorization", "Bearer "+correctBearerToken);
+		setConfigurationInEnvironment(wrongBearerToken, "/metrics", true);
 
-		prepareConfigurationMock();
 		testFilter();
 
 		assertThat(response.getStatus(), equalTo(401));
 	}
 
 	@Test
-	public void relevantPathAndAuthEnabledWithCorrectToken() throws ServletException, IOException {
-		Mockito.when(configuration.getPrometheusMetricsPath()).thenReturn("/metrics");
+	public void relevantPathAndAuthEnabledWithCorrectToken() throws ServletException, IOException, NoSuchFieldException, IllegalAccessException {
 		request.setRequestURI("/metrics");
-		request.setHeader("Authorization", "Bearer correct");
-		Mockito.when(configuration.isAuthEnable()).thenReturn(true);
-		Mockito.when(configuration.getApplicationId()).thenReturn("correct");
+		String correctBearerToken = UUID.randomUUID().toString();
+		request.setHeader("Authorization", "Bearer "+correctBearerToken);
+		setConfigurationInEnvironment(correctBearerToken, null, true);
 
-		prepareConfigurationMock();
 		testFilter();
 
 		assertThat(response.getStatus(), equalTo(200));
-	}
-
-	private void prepareConfigurationMock() {
-		mockStatic(Configuration.class);
-		when(Configuration.getInstance()).thenReturn(configuration);
 	}
 
 	private void testFilter() throws ServletException, IOException {

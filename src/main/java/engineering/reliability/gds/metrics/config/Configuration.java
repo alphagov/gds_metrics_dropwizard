@@ -2,12 +2,15 @@ package engineering.reliability.gds.metrics.config;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import engineering.reliability.gds.metrics.utils.EnvVarUtils;
 
 import java.util.Objects;
 
 public class Configuration {
 
 	private static Configuration instance;
+	private static EnvVarUtils envVarUtils;
+
 	private String applicationId;
 	private String prometheusMetricsPath;
 	private boolean activeDropwizardMetrics;
@@ -17,6 +20,9 @@ public class Configuration {
 
 	public static synchronized Configuration getInstance() {
 		if (Objects.isNull(instance)) {
+			// this is so we can overwrite it for testing purposes
+			// i.e. overwrite envVarUtils then getInstance()
+			envVarUtils = Objects.isNull(envVarUtils)?new EnvVarUtils():envVarUtils;
 			instance = new Configuration();
 			instance.populateProperties();
 		}
@@ -24,7 +30,7 @@ public class Configuration {
 		return instance;
 	}
 
-	public void populateProperties() {
+	private void populateProperties() {
 		applicationId = readApplicationId();
 		prometheusMetricsPath = readPrometheusMetricsPath();
 		activeDropwizardMetrics = readDropwizardMetricsActivation();
@@ -47,7 +53,7 @@ public class Configuration {
 	}
 
 	private String readApplicationId() {
-		final String vcapApplication = System.getenv("VCAP_APPLICATION");
+		final String vcapApplication = envVarUtils.getEnv("VCAP_APPLICATION");
 		final JsonObject jsonObject;
 
 		if (Objects.isNull(vcapApplication)) {
@@ -60,15 +66,16 @@ public class Configuration {
 	}
 
 	private String readPrometheusMetricsPath() {
-		final String prometheusMetricsPath = System.getenv("PROMETHEUS_METRICS_PATH");
+		final String prometheusMetricsPath = envVarUtils.getEnv("PROMETHEUS_METRICS_PATH");
 
 		return Objects.nonNull(prometheusMetricsPath) ? prometheusMetricsPath : "/metrics";
 	}
 
 	private boolean readDropwizardMetricsActivation() {
-		final String activeDropwizardMetrics = System.getenv("ENABLE_DROPWIZARD_METRICS");
+		final String activeDropwizardMetrics = envVarUtils.getEnv("ENABLE_DROPWIZARD_METRICS");
 
 		return Objects.nonNull(activeDropwizardMetrics) && activeDropwizardMetrics.equals("true");
 
 	}
+
 }

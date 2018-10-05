@@ -3,30 +3,25 @@ package engineering.reliability.gds.metrics.config;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
-import static java.lang.System.getenv;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.powermock.api.mockito.PowerMockito.mockStatic;
-import static org.powermock.api.mockito.PowerMockito.when;
 
-@RunWith(PowerMockRunner.class)
-public class ConfigurationTest {
-
-	private Configuration configuration;
+@RunWith(MockitoJUnitRunner.class)
+public class ConfigurationTest extends AbstractConfigurationTest {
 
 	@Before
-	public void setUp() {
-		configuration = Configuration.getInstance();
+	public void setUp() throws NoSuchFieldException, IllegalAccessException {
+		clearConfigurationConfiguration();
 	}
 
 	@Test
 	public void setDefaultValues() {
+		configuration = Configuration.getInstance();
+
 		assertThat("ApplicationId should be null",
 				configuration.getApplicationId(), nullValue());
 		assertThat("PrometheusMetricsPath should be null",
@@ -38,53 +33,30 @@ public class ConfigurationTest {
 	}
 
 	@Test
-	@PrepareForTest({Configuration.class})
-	public void getApplicationIdFromEnv() {
-		prepareEnvMocks();
-
-		configuration.populateProperties();
-
+	public void getApplicationIdFromEnv() throws NoSuchFieldException, IllegalAccessException {
+		setConfigurationInEnvironment("something", null, false);
 		assertThat("ApplciationId should be equal to 'something'",
 				configuration.getApplicationId(), equalTo("something"));
 	}
 
-	private void prepareEnvMocks() {
-		mockStatic(System.class);
-		when(getenv(eq("VCAP_APPLICATION"))).thenReturn("{ \"application_id\" => \"something\" }");
-		when(getenv(eq("PROMETHEUS_METRICS_PATH"))).thenReturn("/prometheus");
-		when(getenv(eq("ENABLE_DROPWIZARD_METRICS"))).thenReturn("true");
-	}
-
 	@Test
-	@PrepareForTest({Configuration.class})
-	public void getPrometheusMetricsPathFromEnv() {
-		prepareEnvMocks();
-
-		configuration.populateProperties();
-
+	public void getPrometheusMetricsPathFromEnv() throws NoSuchFieldException, IllegalAccessException {
+		setConfigurationInEnvironment(null, "/prometheus", false);
 		assertThat("PrometheusMetricsPath should be equal to '/prometheus'",
 				configuration.getPrometheusMetricsPath(), equalTo("/prometheus"));
 	}
 
 	@Test
-	@PrepareForTest({Configuration.class})
-	public void getActiveDropwizardMetricsPathFromEnv() {
-		prepareEnvMocks();
-
-		configuration.populateProperties();
-
+	public void getActiveDropwizardMetricsPathFromEnv() throws NoSuchFieldException, IllegalAccessException {
+		setConfigurationInEnvironment(null, null, true);
 		assertThat("activeDropwizardMetrics should be equal to 'true'",
 				configuration.isActiveDropwizardMetrics(), equalTo(true));
 	}
 
 	@Test
-	@PrepareForTest({Configuration.class})
-	public void checkIfAuthorizationIsEnabled() {
-		prepareEnvMocks();
-
-		configuration.populateProperties();
-
-		assertThat("Authorization should be enables",
+	public void checkIfAuthorizationIsEnabled() throws NoSuchFieldException, IllegalAccessException {
+		setConfigurationInEnvironment("app", null, false);
+		assertThat("Authorization should be enabled if application name is set",
 				configuration.isAuthEnable(), is(true));
 	}
 }

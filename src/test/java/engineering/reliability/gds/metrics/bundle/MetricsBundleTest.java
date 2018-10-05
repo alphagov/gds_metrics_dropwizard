@@ -1,5 +1,6 @@
 package engineering.reliability.gds.metrics.bundle;
 
+import engineering.reliability.gds.metrics.config.AbstractConfigurationTest;
 import engineering.reliability.gds.metrics.filter.AuthenticationFilter;
 import engineering.reliability.gds.metrics.filter.RequestDurationFilter;
 import engineering.reliability.gds.metrics.filter.RequestCountFilter;
@@ -24,7 +25,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class MetricsBundleTest {
+public class MetricsBundleTest extends AbstractConfigurationTest {
 
 	private final ServletEnvironment servletEnvironment = mock(ServletEnvironment.class);
 	private final Environment environment = mock(Environment.class);
@@ -32,8 +33,9 @@ public class MetricsBundleTest {
 	private String servletPath = "";
 
 	@Before
-	public void setUp() {
+	public void setUp() throws NoSuchFieldException, IllegalAccessException {
 		when(environment.servlets()).thenReturn(servletEnvironment);
+		clearConfigurationConfiguration();
 	}
 
 	@Test
