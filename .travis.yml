@@ -6,6 +6,7 @@ cache:
   - "$HOME/.m2"
 jdk:
 - oraclejdk8
+- openjdk11
 deploy:
   provider: script
   script: bash scripts/travis_deploy.sh

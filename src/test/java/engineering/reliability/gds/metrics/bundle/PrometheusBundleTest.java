@@ -1,10 +1,12 @@
 package engineering.reliability.gds.metrics.bundle;
 
+import engineering.reliability.gds.metrics.config.AbstractConfigurationTest;
 import engineering.reliability.gds.metrics.support.TestApplication;
 import engineering.reliability.gds.metrics.support.TestConfiguration;
 import io.dropwizard.testing.ConfigOverride;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.glassfish.jersey.client.JerseyClientBuilder;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 
@@ -15,7 +17,12 @@ import static engineering.reliability.gds.metrics.bundle.PrometheusBundle.PROMET
 import static engineering.reliability.gds.metrics.support.TestResource.TEST_RESOURCE_PATH;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class PrometheusBundleTest {
+public class PrometheusBundleTest extends AbstractConfigurationTest {
+
+    @BeforeClass
+    public static void beforeClass() throws NoSuchFieldException, IllegalAccessException {
+        clearConfigurationConfiguration();
+    }
 
     @ClassRule
     public static final DropwizardAppRule<TestConfiguration> appRuleWithMetrics = new DropwizardAppRule<>(TestApplication.class, null,
