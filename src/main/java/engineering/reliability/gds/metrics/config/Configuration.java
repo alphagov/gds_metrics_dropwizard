@@ -9,7 +9,8 @@ import java.util.Objects;
 public class Configuration {
 
 	private static Configuration instance;
-	private static EnvVarUtils envVarUtils;
+	// initialise this once, so it can be overwritten in the tests (and a force reload triggered)
+	private static EnvVarUtils envVarUtils = new EnvVarUtils();
 
 	private String applicationId;
 	private String prometheusMetricsPath;
@@ -20,9 +21,6 @@ public class Configuration {
 
 	public static synchronized Configuration getInstance() {
 		if (Objects.isNull(instance)) {
-			// this is so we can overwrite it for testing purposes
-			// i.e. overwrite envVarUtils then getInstance()
-			envVarUtils = Objects.isNull(envVarUtils)?new EnvVarUtils():envVarUtils;
 			instance = new Configuration();
 			instance.populateProperties();
 		}
