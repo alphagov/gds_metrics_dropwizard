@@ -17,8 +17,12 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * @deprecated this is used with {@link engineering.reliability.gds.metrics.bundle.MetricsBundle}, which will be removed in future -> migrate to using {@link engineering.reliability.gds.metrics.bundle.PrometheusBundle}
+ */
 @Provider
 @Priority(500)
+@Deprecated
 public class AuthenticationFilter implements Filter {
 
 	private static final Pattern TOKEN = Pattern.compile("Bearer (.*)", Pattern.CASE_INSENSITIVE);

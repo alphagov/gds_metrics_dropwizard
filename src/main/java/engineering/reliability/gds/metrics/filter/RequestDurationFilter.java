@@ -26,7 +26,9 @@ import java.util.Objects;
  * See the
  * <a href="https://github.com/prometheus/client_java/blob/40d179d0d6b3f6521a5d1397c42024f04ccc3e52/simpleclient_servlet/src/main/java/io/prometheus/client/filter/MetricsFilter.java">original class</a>
  * for more documentation.
+ * @deprecated this is used with {@link engineering.reliability.gds.metrics.bundle.MetricsBundle}, which will be removed in future -> migrate to using {@link engineering.reliability.gds.metrics.bundle.PrometheusBundle}
  */
+@Deprecated
 public class RequestDurationFilter implements Filter {
 
 	static final String PATH_COMPONENT_PARAM = "path-components";

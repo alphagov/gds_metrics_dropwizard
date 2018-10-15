@@ -2,10 +2,15 @@ package engineering.reliability.gds.metrics.config;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import engineering.reliability.gds.metrics.bundle.PrometheusBundle;
 import engineering.reliability.gds.metrics.utils.EnvVarUtils;
 
 import java.util.Objects;
 
+/**
+ * @deprecated this is used with {@link engineering.reliability.gds.metrics.bundle.MetricsBundle}, which will be removed in future -> migrate to using {@link engineering.reliability.gds.metrics.bundle.PrometheusBundle}
+ */
+@Deprecated
 public class Configuration {
 
 	private static Configuration instance;

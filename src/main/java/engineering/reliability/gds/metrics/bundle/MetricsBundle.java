@@ -30,7 +30,9 @@ import java.util.EnumSet;
  *    <li> it adds {@link AuthenticationFilter} to ensure requests to the metrics endpoint based on the application_id
  *      in the VCAP_APPLICATION environment variable
  * </ul>
+ * @deprecated this bundle will be removed in future -> migrate to {@link engineering.reliability.gds.metrics.bundle.PrometheusBundle}
  */
+@Deprecated
 public class MetricsBundle implements Bundle {
 
 	private final Configuration configuration = Configuration.getInstance();

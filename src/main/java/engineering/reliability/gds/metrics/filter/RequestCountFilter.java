@@ -14,6 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * @deprecated this is used with {@link engineering.reliability.gds.metrics.bundle.MetricsBundle}, which will be removed in future -> migrate to using {@link engineering.reliability.gds.metrics.bundle.PrometheusBundle}
+ */
+@Deprecated
 public class RequestCountFilter implements Filter {
 	private Counter counter;
 	private final String metricName;
