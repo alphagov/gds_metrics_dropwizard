@@ -30,7 +30,7 @@ Before using GDS metrics you should have:
     <repositories>
         <repository>
             <id>reliability-engineering-repository</id>
-            <name>Repository containing reliability enginieering dependencies</name>
+            <name>Repository containing reliability engineering dependencies</name>
             <url>https://dl.bintray.com/alphagov/maven</url>
         </repository>
     </repositories>
@@ -48,7 +48,7 @@ Before using GDS metrics you should have:
     Maven
     ```
     <dependency>
-        <groupdId>engineering.gds-reliability</groupdId>
+        <groupId>engineering.gds-reliability</groupId>
         <artifactId>gds-metrics-dropwizard</artifactId>
         <version>0.1.0</version>
     </dependency>
