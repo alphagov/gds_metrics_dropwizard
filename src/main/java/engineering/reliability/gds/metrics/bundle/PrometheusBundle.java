@@ -27,21 +27,8 @@ import java.util.SortedMap;
  *  <li>it registers the dropwizard metrics (ie com.codahale.metrics metrics) with the prometheus registry
  *  <li>it registers the {@link DefaultExports} with the prometheus registry
  *  <li>it registers a prometheus {@link MetricsServlet} to serve metrics on /prometheus/metrics on the admin port
+ *  <li>it filters out jvm.* dropwizard metrics (which are mostly duplicated by DefaultExports)
  * </ul>
- *
- * Differences between this and {@link MetricsBundle}:
- * <ul>
- *  <li> PrometheusBundle listens on admin port, MetricsBundle listens on app port
- *    <li> PrometheusBundle therefore doesn't need {@link engineering.reliability.gds.metrics.filter.AuthenticationFilter}
- *  <li> PrometheusBundle filters out jvm.* dropwizard metrics
- *  <li> PrometheusBundle doesn't assume you want {@link engineering.reliability.gds.metrics.filter.RequestCountFilter} or
- *    {@link engineering.reliability.gds.metrics.filter.RequestDurationFilter}
- *  <li> MetricsBundle uses its own magic configuration in {@link engineering.reliability.gds.metrics.config.Configuration},
- *    PrometheusBundle uses {@link ConfiguredBundle} to have configuration injected in a more dropwizard-native way
- * </ul>
- *
- * Longer term, I think we should not have two separate bundles, and instead find a way to merge the functionality
- * into one.  For the moment, though, I want something simple that can be used by Verify.
  */
 public class PrometheusBundle implements ConfiguredBundle<PrometheusConfiguration> {
 

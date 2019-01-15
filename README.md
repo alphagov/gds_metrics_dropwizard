@@ -4,11 +4,7 @@ GDS Metrics are in Alpha and these instructions are subject to change.
 
 The GDS [Dropwizard][] metrics library enables your Java web app to export performance data to [Prometheus][] and can be added to your app using this library.
 
-The library is a thin wrapper around the [Prometheus instrumentation library for JVM applications][] that:
-
-* adds a MetricsBundle you can include in your dropwizard app
-* fixes [label naming][] so it's consistent across different app types
-* protects your /metrics endpoint with basic HTTP authentication for apps deployed to GOV.UK PaaS
+The library is a thin wrapper around the [Prometheus instrumentation library for JVM applications][] that adds a PrometheusBundle you can include in your dropwizard app.
 
 Once you’ve added the library, metrics data is served from an endpoint on your app and is scraped by Prometheus. This data can be turned into performance dashboards using [Grafana][].
 
@@ -18,8 +14,7 @@ You can read more about the Reliability Engineering monitoring solution [here][]
 
 Before using GDS metrics you should have:
 
-* created a Java app
-* deployed that Java app to [GOV.UK Platform as a Service (PaaS)][]
+* created a Dropwizard app
 
 ## How to build your project
 
@@ -59,56 +54,21 @@ Before using GDS metrics you should have:
     implementation 'engineering.gds-reliability:gds-metrics-dropwizard:0.1.0'
     ```
 
-By default, metrics will be exposed at the path /metrics. You can change this with an environment variable like this:
-
-    ```
-    PROMETHEUS_METRICS_PATH=/metrics
-    ```
+The metrics will be exposed at the path /prometheus/metrics on the admin port.
 
 ## How to Change your project
 
-1. Add the `MetricsBundle`.
-    ```
-    public void initialize(final Bootstrap<ExampleConfiguration> bootstrap) {
-        ...
-        bootstrap.addBundle(new MetricsBundle());
-        ...
-    }
-    ```
-
-2. If your app requires full authentication, disable the basic authentication for the metrics path (by default, /metrics). The Dropwizard library enables HTTP basic authentication for the metrics path so Prometheus can scrape the metrics.
-
-To recover the original value, use:
-
-`Configuration.getInstance.getPrometheusMetricsPath()`
-
-Your metrics endpoint will now be available in your production environment. Citizens won’t see your metrics in production.
-
-## Running on GOV.UK Platform as a Service (PaaS)
-
-The install steps for GDS Metrics only apply to a project on your local machine. If your app runs on [PaaS][], you'll need to set the [environment variable][] by running:
+Add the `PrometheusBundle`:
 
 ```
-$ cf set-env your-app-name PROMETHEUS_METRICS_PATH /metrics
+public void initialize(final Bootstrap<ExampleConfiguration> bootstrap) {
+    ...
+    bootstrap.addBundle(new PrometheusBundle());
+    ...
+}
 ```
 
-Where `your-app-name` is the name of your app.
-
-Your metrics endpoint will now be available in your production environment. Citizens won’t see your metrics in production as this endpoint is automatically protected with authentication.
-
-## How to setup extended metrics
-
-<placeholder to actually list what metrics you’ll get>
-
-Extended metrics are based on the project [Dropwizard Metrics][], you can choose to activate them if you want to build custom Grafana dashboards.
-
-You can also enable Dropwizard extended metrics by running this command:
-
-```
-$ cf set-env your-app-name ENABLE_DROPWIZARD_METRICS true
-```
-
-Where `your-app-name` is the name of your app.
+Your metrics endpoint will now be available in your production environment.
 
 ## How to configure custom metrics
 
