@@ -45,13 +45,13 @@ Before using GDS metrics you should have:
     <dependency>
         <groupId>engineering.gds-reliability</groupId>
         <artifactId>gds-metrics-dropwizard</artifactId>
-        <version>0.1.0</version>
+        <version>0.2.0</version>
     </dependency>
     ```
 
     Gradle
     ```
-    implementation 'engineering.gds-reliability:gds-metrics-dropwizard:0.1.0'
+    implementation 'engineering.gds-reliability:gds-metrics-dropwizard:0.2.0'
     ```
 
 The metrics will be exposed at the path /prometheus/metrics on the admin port.
