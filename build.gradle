@@ -77,7 +77,7 @@ dependencies {
 
     compileOnly 'io.dropwizard:dropwizard-core:'+dropwizard_version
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13'
     testImplementation 'org.mockito:mockito-core:'+mockito_version
     testImplementation 'io.dropwizard:dropwizard-testing:'+dropwizard_version
 }
