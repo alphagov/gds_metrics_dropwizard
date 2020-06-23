@@ -69,7 +69,7 @@ def dependencyVersions = [
 dependencies {
     api 'io.prometheus:simpleclient_dropwizard:0.9.0'
     api 'io.prometheus:simpleclient_servlet:0.7.0'
-    api 'io.prometheus:simpleclient_hotspot:0.7.0'
+    api 'io.prometheus:simpleclient_hotspot:0.9.0'
 
     implementation 'com.google.code.gson:gson:2.8.6'
     implementation 'org.glassfish.jersey.core:jersey-client:2.25.1'
