@@ -2,7 +2,7 @@
 
 set -ue
 
-GRADLE_VERSION=$(./gradlew properties | grep version | awk '{ print $2 }')
+GRADLE_VERSION=$(./gradlew properties | grep -w version | awk '{ print $2 }')
 
 if [ $TRAVIS_TAG != $GRADLE_VERSION ]; then
     echo tag $TRAVIS_TAG disagrees with gradle version $GRADLE_VERSION. aborting
