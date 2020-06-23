@@ -8,3 +8,7 @@ update_configs:
     target_branch: "master"
     commit_message:
       prefix: "BAU"
+    ignored_updates:
+      - match:
+          dependency_name: "io.dropwizard:*"
+          version_requirement: "2.+"
