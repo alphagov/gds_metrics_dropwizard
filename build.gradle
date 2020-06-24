@@ -72,7 +72,7 @@ dependencies {
     api 'io.prometheus:simpleclient_hotspot:0.9.0'
 
     implementation 'com.google.code.gson:gson:2.8.6'
-    implementation 'org.glassfish.jersey.core:jersey-client:2.25.1'
+    implementation 'org.glassfish.jersey.core:jersey-client:2.31'
     implementation'javax.servlet:javax.servlet-api:4.0.1'
 
     compileOnly "io.dropwizard:dropwizard-core:$dropwizard_version"
