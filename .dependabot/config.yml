@@ -12,3 +12,7 @@ update_configs:
       - match:
           dependency_name: "io.dropwizard:*"
           version_requirement: "2.+"
+      - match:
+          # We currently use the latest version supported by Dropwizard v1, so cannot upgrade
+          dependency_name: "org.glassfish.jersey.core:jersey-client"
+          version_requirement: "+"
