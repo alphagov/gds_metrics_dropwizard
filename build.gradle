@@ -75,11 +75,11 @@ dependencies {
     implementation 'org.glassfish.jersey.core:jersey-client:2.25.1'
     implementation'javax.servlet:javax.servlet-api:4.0.1'
 
-    compileOnly 'io.dropwizard:dropwizard-core:'+dropwizard_version
+    compileOnly "io.dropwizard:dropwizard-core:$dropwizard_version"
 
     testImplementation 'junit:junit:4.13'
-    testImplementation 'org.mockito:mockito-core:'+mockito_version
-    testImplementation 'io.dropwizard:dropwizard-testing:'+dropwizard_version
+    testImplementation "org.mockito:mockito-core:$mockito_version"
+    testImplementation "io.dropwizard:dropwizard-testing:$dropwizard_version"
 }
 
 publishing {
