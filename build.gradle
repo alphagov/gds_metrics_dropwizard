@@ -62,7 +62,7 @@ jar {
 }
 
 ext {
-    dropwizard_version = '1.3.25'
+    dropwizard_version = '1.3.27'
     mockito_version = '3.5.13'
 }
 
