@@ -67,7 +67,7 @@ ext {
 }
 
 dependencies {
-    api 'io.prometheus:simpleclient_dropwizard:0.9.0'
+    api 'io.prometheus:simpleclient_dropwizard:0.10.0'
     api 'io.prometheus:simpleclient_servlet:0.9.0'
     api 'io.prometheus:simpleclient_hotspot:0.9.0'
 
