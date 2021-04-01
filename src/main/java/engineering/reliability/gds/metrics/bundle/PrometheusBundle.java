@@ -42,8 +42,7 @@ public class PrometheusBundle implements ConfiguredBundle<PrometheusConfiguratio
     public void run(PrometheusConfiguration configuration, Environment environment) {
         if (configuration.isPrometheusEnabled()) {
             DefaultExports.initialize();
-            MetricRegistry metrics = new FilteredMetricRegistryView(environment.metrics(), this::isNotJvmMetric);
-            CollectorRegistry.defaultRegistry.register(new DropwizardExports(metrics));
+            CollectorRegistry.defaultRegistry.register(new DropwizardExports(environment.metrics(), this::isNotJvmMetric));
             environment.admin().addServlet("metrics", new MetricsServlet())
                     .addMapping(PROMETHEUS_METRICS_RESOURCE);
         }
@@ -62,46 +61,5 @@ public class PrometheusBundle implements ConfiguredBundle<PrometheusConfiguratio
      */
     private boolean isNotJvmMetric(String name, Metric metric) {
         return !name.startsWith("jvm.");
-    }
-
-    /**
-     * This class wraps a MetricRegistry but only presents a subset of the metrics to the caller
-     * We use it to present only certain metrics to the Prometheus CollectorRegistry using
-     * filters like isNotJvmMetric above.
-     */
-    private static class FilteredMetricRegistryView extends MetricRegistry {
-        private final MetricRegistry metrics;
-        private final MetricFilter filter;
-
-        private FilteredMetricRegistryView(MetricRegistry metrics, MetricFilter filter) {
-            this.metrics = metrics;
-            this.filter = filter;
-        }
-
-        @Override
-        @SuppressWarnings("rawtypes")
-        public SortedMap<String, Gauge> getGauges() {
-            return metrics.getGauges(filter);
-        }
-
-        @Override
-        public SortedMap<String, Counter> getCounters() {
-            return metrics.getCounters(filter);
-        }
-
-        @Override
-        public SortedMap<String, Histogram> getHistograms() {
-            return metrics.getHistograms(filter);
-        }
-
-        @Override
-        public SortedMap<String, Meter> getMeters() {
-            return metrics.getMeters(filter);
-        }
-
-        @Override
-        public SortedMap<String, Timer> getTimers() {
-            return metrics.getTimers(filter);
-        }
     }
 }
