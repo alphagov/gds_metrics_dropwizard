@@ -1,5 +1,5 @@
 plugins {
-    id "com.jfrog.bintray" version "1.8.5"
+    id "io.github.gradle-nexus.publish-plugin" version "1.0.0"
 }
 
 repositories {
@@ -8,29 +8,14 @@ repositories {
 
 apply plugin: 'java-library'
 apply plugin: 'maven-publish'
+apply plugin: 'signing'
 apply plugin: 'maven'
-
-group = 'engineering.gds-reliability'
+apply plugin: 'io.github.gradle-nexus.publish-plugin'
 
 description = ' Library for prometheus instrumentation in Dropwizard based apps.'
 
 sourceCompatibility = 1.11
 targetCompatibility = 1.11
-
-bintray {
-    user = System.env.BINTRAY_USER
-    key = System.env.BINTRAY_KEY
-    configurations = ['archives']
-    publish = true
-
-    pkg {
-        repo = 'maven'
-        name = 'gds-metrics-dropwizard'
-        userOrg = 'alphagov'
-        licenses = ['MIT']
-        vcsUrl = 'https://github.com/alphagov/gds_metrics_dropwizard.git'
-    }
-}
 
 test {
     dependsOn << compileTestJava
@@ -82,10 +67,69 @@ dependencies {
     testImplementation "io.dropwizard:dropwizard-testing:$dropwizard_version"
 }
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+nexusPublishing {
+    useStaging = true
+    repositories {
+        sonatype {
+            // because we registered in Sonatype after 24 Feb 2021, we provide these URIs
+            // see: https://github.com/gradle-nexus/publish-plugin/blob/master/README.md
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+            username = System.getenv("SONATYPE_USERNAME")
+            password = System.getenv("SONATYPE_PASSWORD")
+        }
+    }
+}
+
+signing {
+    useInMemoryPgpKeys(
+            System.getenv("MAVEN_CENTRAL_SIGNING_KEY"),
+            System.getenv("MAVEN_CENTRAL_SIGNING_KEY_PASSWORD")
+    )
+    sign publishing.publications
+}
+
+def buildVersion = "0.7.0-${System.env.BUILD_NUMBER ?: 'SNAPSHOT'}"
+group = 'uk.gov.ida'
+version = "$buildVersion"
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
+            groupId = 'uk.gov.ida'
+            pom {
+                name = 'gds_metrics_dropwizard'
+                packaging = 'jar'
+                description = 'Library for gds metrics dropwizard operations.'
+                url = 'https://github.com/alphagov/gds_metrics_dropwizard'
+                artifactId = 'gds_metrics_dropwizard'
+
+                scm {
+                    url = 'https://github.com/alphagov/gds_metrics_dropwizard'
+                    connection = 'scm:git:git://github.com/alphagov/gds_metrics_dropwizard.git'
+                    developerConnection = 'scm:git:ssh://git@github.com:alphagov/gds_metrics_dropwizard.git'
+                }
+
+                licenses {
+                    license {
+                        name = 'MIT Licence'
+                        url = 'https://github.com/alphagov/gds_metrics_dropwizard/blob/master/LICENSE'
+                        distribution = 'repo'
+                    }
+                }
+
+                developers {
+                    developer {
+                        name = 'GDS Developers'
+                    }
+                }
+            } // pom
         }
     }
 }
