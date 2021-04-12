@@ -9,7 +9,6 @@ repositories {
 apply plugin: 'java-library'
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
-apply plugin: 'maven'
 apply plugin: 'io.github.gradle-nexus.publish-plugin'
 
 description = ' Library for prometheus instrumentation in Dropwizard based apps.'
@@ -102,7 +101,7 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
-            groupId = 'uk.gov.ida'
+            groupId = group
             pom {
                 name = 'gds_metrics_dropwizard'
                 packaging = 'jar'

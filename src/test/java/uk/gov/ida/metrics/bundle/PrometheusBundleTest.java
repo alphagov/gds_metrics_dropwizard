@@ -1,4 +1,4 @@
-package engineering.reliability.gds.metrics.bundle;
+package uk.gov.ida.metrics.bundle;
 
 import engineering.reliability.gds.metrics.support.TestApplication;
 import engineering.reliability.gds.metrics.support.TestConfiguration;
@@ -11,7 +11,6 @@ import org.junit.Test;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.core.Response;
 
-import static engineering.reliability.gds.metrics.bundle.PrometheusBundle.PROMETHEUS_METRICS_RESOURCE;
 import static engineering.reliability.gds.metrics.support.TestResource.TEST_RESOURCE_PATH;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -33,7 +32,7 @@ public class PrometheusBundleTest {
 
     @Test
     public void aDropwizardResourceTimerMetricIsLogged() {
-        Response response = client.target("http://localhost:" + appRuleWithMetrics.getAdminPort() + PROMETHEUS_METRICS_RESOURCE)
+        Response response = client.target("http://localhost:" + appRuleWithMetrics.getAdminPort() + PrometheusBundle.PROMETHEUS_METRICS_RESOURCE)
                 .request()
                 .get();
         assertThat(response.getStatus()).isEqualTo(200);
@@ -45,7 +44,7 @@ public class PrometheusBundleTest {
         assertThat(response.getStatus()).isEqualTo(200);
         assertThat(response.readEntity(String.class)).isEqualTo("hello");
 
-        response = client.target("http://localhost:" + appRuleWithMetrics.getAdminPort() + PROMETHEUS_METRICS_RESOURCE)
+        response = client.target("http://localhost:" + appRuleWithMetrics.getAdminPort() + PrometheusBundle.PROMETHEUS_METRICS_RESOURCE)
                 .request()
                 .get();
         assertThat(response.getStatus()).isEqualTo(200);
@@ -54,7 +53,7 @@ public class PrometheusBundleTest {
 
     @Test
     public void noDropwizardJvmMetricsAreLogged() {
-        final Response response = client.target("http://localhost:" + appRuleWithMetrics.getAdminPort() + PROMETHEUS_METRICS_RESOURCE)
+        final Response response = client.target("http://localhost:" + appRuleWithMetrics.getAdminPort() + PrometheusBundle.PROMETHEUS_METRICS_RESOURCE)
                 .request()
                 .get();
         assertThat(response.getStatus()).isEqualTo(200);
@@ -67,7 +66,7 @@ public class PrometheusBundleTest {
 
     @Test
     public void metricsAreNotPresentWhenMetricsAreDisabled() {
-        final Response response = client.target("http://localhost:" + appRuleWithoutMetrics.getAdminPort() + PROMETHEUS_METRICS_RESOURCE)
+        final Response response = client.target("http://localhost:" + appRuleWithoutMetrics.getAdminPort() + PrometheusBundle.PROMETHEUS_METRICS_RESOURCE)
                 .request()
                 .get();
         assertThat(response.getStatus()).isEqualTo(404);
