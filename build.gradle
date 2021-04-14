@@ -41,8 +41,6 @@ jar {
         attributes('Implementation-Title': project.name,
                 'Implementation-Version': project.version)
     }
-
-    baseName = 'gds-metrics-dropwizard'
 }
 
 ext {
