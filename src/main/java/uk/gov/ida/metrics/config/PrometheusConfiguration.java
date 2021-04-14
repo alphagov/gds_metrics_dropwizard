@@ -1,4 +1,4 @@
-package engineering.reliability.gds.metrics.config;
+package uk.gov.ida.metrics.config;
 
 public interface PrometheusConfiguration {
     boolean isPrometheusEnabled();

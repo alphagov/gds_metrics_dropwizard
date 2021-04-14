@@ -1,14 +1,7 @@
-package engineering.reliability.gds.metrics.bundle;
+package uk.gov.ida.metrics.bundle;
 
-import com.codahale.metrics.Counter;
-import com.codahale.metrics.Gauge;
-import com.codahale.metrics.Histogram;
-import com.codahale.metrics.Meter;
 import com.codahale.metrics.Metric;
-import com.codahale.metrics.MetricFilter;
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.Timer;
-import engineering.reliability.gds.metrics.config.PrometheusConfiguration;
+import uk.gov.ida.metrics.config.PrometheusConfiguration;
 import io.dropwizard.ConfiguredBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -16,8 +9,6 @@ import io.prometheus.client.CollectorRegistry;
 import io.prometheus.client.dropwizard.DropwizardExports;
 import io.prometheus.client.exporter.MetricsServlet;
 import io.prometheus.client.hotspot.DefaultExports;
-
-import java.util.SortedMap;
 
 /**
  * PrometheusBundle

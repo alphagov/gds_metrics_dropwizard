@@ -1,4 +1,4 @@
-package engineering.reliability.gds.metrics.utils;
+package uk.gov.ida.metrics.utils;
 
 import java.util.Objects;
 

@@ -18,40 +18,20 @@ Before using GDS metrics you should have:
 
 ## How to build your project
 
-1. Add the GDS metrics library to where your project is stored by adding:
-
-    Maven
-    ```
-    <repositories>
-        <repository>
-            <id>reliability-engineering-repository</id>
-            <name>Repository containing reliability engineering dependencies</name>
-            <url>https://dl.bintray.com/alphagov/maven</url>
-        </repository>
-    </repositories>
-    ```
-
-    Gradle
-    ```
-    repositories {
-        maven { url "https://dl.bintray.com/alphagov/maven" }
-    }
-    ```
-
-2. Add your library as a dependency to your project.
+Add your library as a dependency to your project.
 
     Maven
     ```
     <dependency>
-        <groupId>engineering.gds-reliability</groupId>
+        <groupId>uk.gov.ida</groupId>
         <artifactId>gds-metrics-dropwizard</artifactId>
-        <version>0.2.0</version>
+        <version>0.7.0</version>
     </dependency>
     ```
 
     Gradle
     ```
-    implementation 'engineering.gds-reliability:gds-metrics-dropwizard:0.2.0'
+    implementation 'uk.gov.ida:gds-metrics-dropwizard:0.7.0'
     ```
 
 The metrics will be exposed at the path /prometheus/metrics on the admin port.
