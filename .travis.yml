@@ -6,12 +6,3 @@ cache:
   - "$HOME/.m2"
 jdk:
 - openjdk11
-deploy:
-  provider: script
-  script: bash scripts/travis_deploy.sh
-  on:
-    tags: true
-env:
-  global:
-  - BINTRAY_USER=philippotter
-  - secure: xPZ4jTKfFGXTLHf9ARUrXLTrcbpIe3XK8hrOEohSIjCHvHbEGgGKCm4qusVLbzDdWi2LW3wsd9Tk1LWIYk3UToXRQ+NJDYM+ZzOIbGUon4kFLlskeKeb8Z8QqnpOwtrREQ9y7N5bj2WtzwXKzOo0msdSgs/eZm5X5BbZZRZxpEH/JILuWNyG3Kw/31+f1yxnPQ95Q58K1HmjwAAAGF9cJ4UxvjIlP0sU+oK6SQaUf+6V57fWn/Mp5X4+rg29YxJUnV8RWxMaTyYPeSpfDyTgiCDYHrSoWAZUAKH/BGC3tKueOK/DOEDAib/+5h97SzXfhEFAaeaxvwlan82vCK8S9TGkvD1PRECubi4sBsx+c5DEp71Jzk41ZzAzLGP/m3K/DhZSX/TObgMDTTCsRYZoDtxnd/RP+8EAl68nEvpDA+DkG/5EKlHLU8wsppLIDxhz77mHxbgnWT5u50DgRm3VjgQQ3soL/N4tYyWV5yrmUA4zhNUN0Y8BMNsGWjFm//1AfmsL/jq/CMw15kqMQm06SjoRR2joYFTxSOjzENH/VNE/NOrub4bxX5UoOSlNY6NCd2GUe77jhzB7HNdvLeafSALCISSfvQuY1+TJ94xQ/TtVjR3S+/inGS/PtujWPOC1BKyBT9wjgb+hLBMXELmJ5p3LqTiPI1vAvzFyk8QGlO8=
