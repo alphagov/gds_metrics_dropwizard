@@ -1,18 +1,18 @@
 package uk.gov.ida.metrics.bundle;
 
-import engineering.reliability.gds.metrics.support.TestApplication;
-import engineering.reliability.gds.metrics.support.TestConfiguration;
 import io.dropwizard.testing.ConfigOverride;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.glassfish.jersey.client.JerseyClientBuilder;
 import org.junit.ClassRule;
 import org.junit.Test;
+import uk.gov.ida.metrics.support.TestApplication;
+import uk.gov.ida.metrics.support.TestConfiguration;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.core.Response;
 
-import static engineering.reliability.gds.metrics.support.TestResource.TEST_RESOURCE_PATH;
 import static org.assertj.core.api.Assertions.assertThat;
+import static uk.gov.ida.metrics.support.TestResource.TEST_RESOURCE_PATH;
 
 public class PrometheusBundleTest {
 
@@ -36,7 +36,7 @@ public class PrometheusBundleTest {
                 .request()
                 .get();
         assertThat(response.getStatus()).isEqualTo(200);
-        assertThat(response.readEntity(String.class)).contains("engineering_reliability_gds_metrics_support_TestResource_get_count 0");
+        assertThat(response.readEntity(String.class)).contains("uk_gov_ida_metrics_support_TestResource_get_count 0");
 
         response = client.target("http://localhost:" + appRuleWithMetrics.getLocalPort() + TEST_RESOURCE_PATH)
                 .request()
@@ -48,7 +48,7 @@ public class PrometheusBundleTest {
                 .request()
                 .get();
         assertThat(response.getStatus()).isEqualTo(200);
-        assertThat(response.readEntity(String.class)).contains("engineering_reliability_gds_metrics_support_TestResource_get_count 1.0");
+        assertThat(response.readEntity(String.class)).contains("uk_gov_ida_metrics_support_TestResource_get_count 1.0");
     }
 
     @Test

@@ -107,7 +107,7 @@ publishing {
                 packaging = 'jar'
                 description = 'Library for gds metrics dropwizard operations.'
                 url = 'https://github.com/alphagov/gds_metrics_dropwizard'
-                artifactId = 'gds_metrics_dropwizard'
+                artifactId = 'gds-metrics-dropwizard'
 
                 scm {
                     url = 'https://github.com/alphagov/gds_metrics_dropwizard'

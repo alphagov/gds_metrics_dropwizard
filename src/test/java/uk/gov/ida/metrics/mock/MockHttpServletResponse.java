@@ -1,4 +1,4 @@
-package engineering.reliability.gds.metrics.mock;
+package uk.gov.ida.metrics.mock;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
