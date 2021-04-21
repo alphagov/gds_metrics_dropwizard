@@ -1,4 +1,4 @@
-package engineering.reliability.gds.metrics.support;
+package uk.gov.ida.metrics.support;
 
 import uk.gov.ida.metrics.bundle.PrometheusBundle;
 import io.dropwizard.Application;

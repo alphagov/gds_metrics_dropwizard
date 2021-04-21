@@ -1,4 +1,4 @@
-package engineering.reliability.gds.metrics.support;
+package uk.gov.ida.metrics.support;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import uk.gov.ida.metrics.config.PrometheusConfiguration;
