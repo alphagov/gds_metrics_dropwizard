@@ -55,7 +55,7 @@ dependencies {
     api 'io.prometheus:simpleclient_servlet:0.10.0'
     api 'io.prometheus:simpleclient_hotspot:0.10.0'
 
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.code.gson:gson:2.8.7'
     implementation 'org.glassfish.jersey.core:jersey-client:2.25.1'
     implementation'javax.servlet:javax.servlet-api:4.0.1'
 
