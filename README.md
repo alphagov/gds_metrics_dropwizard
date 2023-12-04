@@ -1,4 +1,8 @@
-# GDS metrics for Dropwizard apps
+# GDS metrics for Dropwizard 
+
+>**GOV.UK Verify has closed**
+>
+>This repository is out of date and has been archived
 
 GDS Metrics are in Alpha and these instructions are subject to change.
 
